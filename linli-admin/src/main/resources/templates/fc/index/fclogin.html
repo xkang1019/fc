@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+
+<body>
+<input id="code" type="hidden"  th:value="${code}">
+</body>
+<script th:src="@{/js/fc/js/jquery-3.3.1/jquery-3.3.1.js}"></script>
+<script>
+    var url = 'http://localhost:9999/';
+    // var code = getPar('code');
+    var code = $("#code").val();
+    if (code != ''&&code !=null){
+        console.info('code',code);
+        $.ajax({
+            url: '/weixinpay/getOpenIdWeb',
+            type: 'post',
+            data: {code:code},
+            headers: {"Content-Type":"application/x-www-form-urlencoded"},
+            dataType: 'json',
+            success: function (res) {
+                console.info(res);
+                if(res.code === 0){
+                    location.href='/fc/index/index'
+                }
+            },
+            error: function (err) {
+
+            }
+
+        })
+    }
+
+
+</script>
+
+
+
+</html>

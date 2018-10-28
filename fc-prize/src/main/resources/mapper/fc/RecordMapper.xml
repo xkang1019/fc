@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.fc.mapper.RecordMapper">
+    
+    <resultMap type="Record" id="RecordResult">
+        <result property="id"    column="id"    />
+        <result property="uid"    column="uid"    />
+        <result property="uname"    column="uname"    />
+        <result property="type"    column="type"    />
+        <result property="dateTime"    column="dateTime"    />
+        <result property="uimg"    column="uimg"    />
+    </resultMap>
+	
+	<sql id="selectRecordVo">
+        select id, uid, uname, type, dateTime, uimg from prize_record
+    </sql>
+	
+    <select id="selectRecordList" parameterType="Record" resultMap="RecordResult">
+        <include refid="selectRecordVo"/>
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+             <if test="uid != null "> and uid = #{uid}</if>
+             <if test="uname != null  and uname != '' "> and uname = #{uname}</if>
+             <if test="type != null "> and type = #{type}</if>
+             <if test="dateTime != null "> and `dateTime` LIKE  CONCAT('%',date_format(#{dateTime},'%y-%m-%d'),'%')</if>
+             <if test="uimg != null  and uimg != '' "> and uimg = #{uimg}</if>
+         </where>
+    </select>
+    
+    <select id="selectRecordById" parameterType="Integer" resultMap="RecordResult">
+        <include refid="selectRecordVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertRecord" parameterType="Record">
+        insert into prize_record
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  ">id,</if>
+			<if test="uid != null  ">uid,</if>
+			<if test="uname != null  and uname != ''  ">uname,</if>
+			<if test="type != null  ">type,</if>
+			<if test="dateTime != null  ">dateTime,</if>
+			<if test="uimg != null  and uimg != ''  ">uimg,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  ">#{id},</if>
+			<if test="uid != null  ">#{uid},</if>
+			<if test="uname != null  and uname != ''  ">#{uname},</if>
+			<if test="type != null  ">#{type},</if>
+			<if test="dateTime != null  ">#{dateTime},</if>
+			<if test="uimg != null  and uimg != ''  ">#{uimg},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateRecord" parameterType="Record">
+        update prize_record
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="uid != null  ">uid = #{uid},</if>
+            <if test="uname != null  and uname != ''  ">uname = #{uname},</if>
+            <if test="type != null  ">type = #{type},</if>
+            <if test="dateTime != null  ">dateTime = #{dateTime},</if>
+            <if test="uimg != null  and uimg != ''  ">uimg = #{uimg},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteRecordById" parameterType="Integer">
+        delete from prize_record where id = #{id}
+    </delete>
+	
+    <delete id="deleteRecordByIds" parameterType="String">
+        delete from prize_record where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

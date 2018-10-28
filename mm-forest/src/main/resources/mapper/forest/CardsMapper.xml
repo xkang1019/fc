@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.forest.mapper.CardsMapper">
+    
+    <resultMap type="Cards" id="CardsResult">
+        <result property="id"    column="id"    />
+        <result property="cardUrl"    column="card_url"    />
+        <result property="cardContent"    column="card_content"    />
+        <result property="creationTime"    column="creation_time"    />
+    </resultMap>
+	
+	<sql id="selectCardsVo">
+        select id, card_url, card_content, creation_time from sys_cards
+    </sql>
+	
+    <select id="selectCardsList" parameterType="Cards" resultMap="CardsResult">
+        <include refid="selectCardsVo"/>
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+             <if test="cardUrl != null  and cardUrl != '' "> and card_url = #{cardUrl}</if>
+             <if test="cardContent != null  and cardContent != '' "> and card_content = #{cardContent}</if>
+             <if test="creationTime != null "> and creation_time = #{creationTime}</if>
+         </where>
+    </select>
+    
+    <select id="selectCardsById" parameterType="Integer" resultMap="CardsResult">
+        <include refid="selectCardsVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertCards" parameterType="Cards">
+        insert into sys_cards
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  ">id,</if>
+			<if test="cardUrl != null  and cardUrl != ''  ">card_url,</if>
+			<if test="cardContent != null  and cardContent != ''  ">card_content,</if>
+			<if test="creationTime != null  ">creation_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  ">#{id},</if>
+			<if test="cardUrl != null  and cardUrl != ''  ">#{cardUrl},</if>
+			<if test="cardContent != null  and cardContent != ''  ">#{cardContent},</if>
+			<if test="creationTime != null  ">#{creationTime},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateCards" parameterType="Cards">
+        update sys_cards
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="cardUrl != null  and cardUrl != ''  ">card_url = #{cardUrl},</if>
+            <if test="cardContent != null  and cardContent != ''  ">card_content = #{cardContent},</if>
+            <if test="creationTime != null  ">creation_time = #{creationTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteCardsById" parameterType="Integer">
+        delete from sys_cards where id = #{id}
+    </delete>
+	
+    <delete id="deleteCardsByIds" parameterType="String">
+        delete from sys_cards where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

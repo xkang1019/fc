@@ -1,0 +1,106 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+    <div class="container-div">
+		<div class="btn-group-sm hidden-xs" id="toolbar" role="group">
+			<a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="module:prize:add">
+				<i class="fa fa-plus"></i> 添加
+			</a>
+			<a class="btn btn-primary btn-edit disabled" onclick="$.operate.edit()" shiro:hasPermission="module:prize:edit">
+	            <i class="fa fa-edit"></i> 修改
+	        </a>
+			<a class="btn btn-danger btn-del btn-del disabled" onclick="$.operate.removeAll()" shiro:hasPermission="module:prize:remove">
+				<i class="fa fa-remove"></i> 删除
+			</a>
+		</div>
+			
+		<div class="col-sm-12 select-table table-striped">
+			<table id="bootstrap-table" data-mobile-responsive="true"></table>
+		</div>
+    </div>
+    <div th:include="include :: footer"></div>
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('module:prize:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('module:prize:remove')}]];
+        var prefix = ctx + "fc/prize";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                modalName: "奖品列",
+                columns: [{
+		            checkbox: true
+		        },
+				{
+					field : 'id', 
+					title : 'ID' 
+				},
+				{
+					field : 'name', 
+					title : '奖品名称' 
+				},
+				{
+					field : 'number', 
+					title : '奖品数量' 
+				},
+				{
+					field : 'pTNum', 
+					title : '已经抽数量' 
+				},
+				{
+					field : 'beginDate', 
+					title : '适用的开始时间' 
+				},
+				{
+					field : 'endDate', 
+					title : '适用的结束时间' 
+				},
+				{
+					field : 'foreNumber', 
+					title : '在前多少位里面进行选取' 
+				},
+				{
+					field : 'userID', 
+					title : '指定用户中奖' 
+				},
+				{
+					field : 'nowNumber', 
+					title : '现在进行抽奖的人数' 
+				},
+				{
+					field : 'orderID', 
+					title : '奖品优先率' 
+				},
+				{
+					field : 'lotteryExp', 
+					title : '领奖的有效时间' 
+				},
+				{
+					field : 'oneMaxPriz', 
+					title : '每次中奖发放的奖品数量' 
+				},
+				{
+					field : 'status', 
+					title : '状态' 
+				},
+		        {
+		            title: '操作',
+		            align: 'center',
+		            formatter: function(value, row, index) {
+		            	var actions = [];
+		            	actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="#" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="#" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
+						return actions.join('');
+		            }
+		        }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

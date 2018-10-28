@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ruoyi.forest.mapper.SlDiaryDao">
+
+	<select id="get" resultType="com.ruoyi.forest.domian.SlDiaryDO">
+		select `id`,`weather`,`creationTime`,`content`,`cardId`,`cardImg`,`contenTimg`,`pvNumber`,`collectNumber`,`likeNumber`,`commentNumber`,`transpondNumber`,`haedImg`,`name`,`type`,`cardContent`,`userId` from sl_diary where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.ruoyi.forest.domian.SlDiaryDO">
+		select `id`,`weather`,`creationTime`,`content`,`cardId`,`cardImg`,`contenTimg`,`pvNumber`,`collectNumber`,`likeNumber`,`commentNumber`,`transpondNumber`,`haedImg`,`name`,`type`,`cardContent`,`userId` from sl_diary
+        <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="weather != null and weather != ''"> and weather = #{weather} </if>
+		  		  <if test="creationtime != null and creationtime != ''"> and creationTime = #{creationtime} </if>
+		  		  <if test="content != null and content != ''"> and content = #{content} </if>
+		  		  <if test="cardid != null and cardid != ''"> and cardId = #{cardid} </if>
+		  		  <if test="cardimg != null and cardimg != ''"> and cardImg = #{cardimg} </if>
+		  		  <if test="contentimg != null and contentimg != ''"> and contenTimg = #{contentimg} </if>
+		  		  <if test="pvnumber != null and pvnumber != ''"> and pvNumber = #{pvnumber} </if>
+		  		  <if test="collectnumber != null and collectnumber != ''"> and collectNumber = #{collectnumber} </if>
+		  		  <if test="likenumber != null and likenumber != ''"> and likeNumber = #{likenumber} </if>
+		  		  <if test="commentnumber != null and commentnumber != ''"> and commentNumber = #{commentnumber} </if>
+		  		  <if test="transpondnumber != null and transpondnumber != ''"> and transpondNumber = #{transpondnumber} </if>
+		  		  <if test="haedimg != null and haedimg != ''"> and haedImg = #{haedimg} </if>
+		  		  <if test="name != null and name != ''"> and name = #{name} </if>
+		  		  <if test="type != null and type != ''"> and type = #{type} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit ${offset}, ${limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from sl_diary
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="weather != null and weather != ''"> and weather = #{weather} </if>
+		  		  <if test="creationtime != null and creationtime != ''"> and creationTime = #{creationtime} </if>
+		  		  <if test="content != null and content != ''"> and content = #{content} </if>
+		  		  <if test="cardid != null and cardid != ''"> and cardId = #{cardid} </if>
+		  		  <if test="cardimg != null and cardimg != ''"> and cardImg = #{cardimg} </if>
+		  		  <if test="contentimg != null and contentimg != ''"> and contenTimg = #{contentimg} </if>
+		  		  <if test="pvnumber != null and pvnumber != ''"> and pvNumber = #{pvnumber} </if>
+		  		  <if test="collectnumber != null and collectnumber != ''"> and collectNumber = #{collectnumber} </if>
+		  		  <if test="likenumber != null and likenumber != ''"> and likeNumber = #{likenumber} </if>
+		  		  <if test="commentnumber != null and commentnumber != ''"> and commentNumber = #{commentnumber} </if>
+		  		  <if test="transpondnumber != null and transpondnumber != ''"> and transpondNumber = #{transpondnumber} </if>
+		  		  <if test="haedimg != null and haedimg != ''"> and haedImg = #{haedimg} </if>
+		  		  <if test="name != null and name != ''"> and name = #{name} </if>
+		  		  <if test="type != null and type != ''"> and type = #{type} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.ruoyi.forest.domian.SlDiaryDO" useGeneratedKeys="true" keyProperty="id">
+		insert into sl_diary
+		(
+			`weather`, 
+			`creationTime`, 
+			`content`, 
+			`cardId`, 
+			`cardImg`, 
+			`contenTimg`, 
+			`pvNumber`, 
+			`collectNumber`, 
+			`likeNumber`, 
+			`commentNumber`, 
+			`transpondNumber`, 
+			`haedImg`, 
+			`name`, 
+			`type`,
+			`cardContent`,
+			`userId`
+		)
+		values
+		(
+			#{weather}, 
+			#{creationtime}, 
+			#{content}, 
+			#{cardid}, 
+			#{cardimg}, 
+			#{contentimg}, 
+			#{pvnumber}, 
+			#{collectnumber}, 
+			#{likenumber}, 
+			#{commentnumber}, 
+			#{transpondnumber}, 
+			#{haedimg}, 
+			#{name}, 
+			#{type},
+			#{cardcontent},
+			#{userId}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.ruoyi.forest.domian.SlDiaryDO">
+		update sl_diary 
+		<set>
+			<if test="weather != null">`weather` = #{weather}, </if>
+			<if test="creationtime != null">`creationTime` = #{creationtime}, </if>
+			<if test="content != null">`content` = #{content}, </if>
+			<if test="cardid != null">`cardId` = #{cardid}, </if>
+			<if test="cardimg != null">`cardImg` = #{cardimg}, </if>
+			<if test="contentimg != null">`contenTimg` = #{contentimg}, </if>
+			<if test="pvnumber != null">`pvNumber` = #{pvnumber}, </if>
+			<if test="collectnumber != null">`collectNumber` = #{collectnumber}, </if>
+			<if test="likenumber != null">`likeNumber` = #{likenumber}, </if>
+			<if test="commentnumber != null">`commentNumber` = #{commentnumber}, </if>
+			<if test="transpondnumber != null">`transpondNumber` = #{transpondnumber}, </if>
+			<if test="haedimg != null">`haedImg` = #{haedimg}, </if>
+			<if test="name != null">`name` = #{name}, </if>
+			<if test="type != null">`type` = #{type}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from sl_diary where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from sl_diary where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.module.mapper.PrizeMapper">
+    
+    <resultMap type="Prize" id="PrizeResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="number"    column="number"    />
+        <result property="pTNum"    column="PTNum"    />
+        <result property="beginDate"    column="BeginDate"    />
+        <result property="endDate"    column="EndDate"    />
+        <result property="foreNumber"    column="ForeNumber"    />
+        <result property="userID"    column="UserID"    />
+        <result property="nowNumber"    column="NowNumber"    />
+        <result property="orderID"    column="OrderID"    />
+        <result property="lotteryExp"    column="LotteryExp"    />
+        <result property="oneMaxPriz"    column="OneMaxPriz"    />
+        <result property="status"    column="status"    />
+    </resultMap>
+	
+	<sql id="selectPrizeVo">
+        select id, `name`, `number`, PTNum, BeginDate, EndDate, ForeNumber, UserID, NowNumber, OrderID, LotteryExp, OneMaxPriz, status from prize
+    </sql>
+	
+    <select id="selectPrizeList" parameterType="Prize" resultMap="PrizeResult">
+        <include refid="selectPrizeVo"/>
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+             <if test="name != null  and name != '' "> and `name` = #{name}</if>
+             <if test="number != null "> and `number` = #{number}</if>
+             <if test="pTNum != null "> and PTNum = #{pTNum}</if>
+             <if test="beginDate != null "> and BeginDate = #{beginDate}</if>
+             <if test="endDate != null "> and EndDate = #{endDate}</if>
+             <if test="foreNumber != null "> and ForeNumber = #{foreNumber}</if>
+             <if test="userID != null "> and UserID = #{userID}</if>
+             <if test="nowNumber != null "> and NowNumber = #{nowNumber}</if>
+             <if test="orderID != null "> and OrderID = #{orderID}</if>
+             <if test="lotteryExp != null "> and LotteryExp = #{lotteryExp}</if>
+             <if test="oneMaxPriz != null "> and OneMaxPriz = #{oneMaxPriz}</if>
+             <if test="status != null "> and status = #{status}</if>
+         </where>
+    </select>
+    
+    <select id="selectPrizeById" parameterType="Integer" resultMap="PrizeResult">
+        <include refid="selectPrizeVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertPrize" parameterType="Prize">
+        insert into prize
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  ">id,</if>
+			<if test="name != null  and name != ''  ">`name`,</if>
+			<if test="number != null  ">`number`,</if>
+			<if test="pTNum != null  ">PTNum,</if>
+			<if test="beginDate != null  ">BeginDate,</if>
+			<if test="endDate != null  ">EndDate,</if>
+			<if test="foreNumber != null  ">ForeNumber,</if>
+			<if test="userID != null  ">UserID,</if>
+			<if test="nowNumber != null  ">NowNumber,</if>
+			<if test="orderID != null  ">OrderID,</if>
+			<if test="lotteryExp != null  ">LotteryExp,</if>
+			<if test="oneMaxPriz != null  ">OneMaxPriz,</if>
+			<if test="status != null  ">status,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  ">#{id},</if>
+			<if test="name != null  and name != ''  ">#{name},</if>
+			<if test="number != null  ">#{number},</if>
+			<if test="pTNum != null  ">#{pTNum},</if>
+			<if test="beginDate != null  ">#{beginDate},</if>
+			<if test="endDate != null  ">#{endDate},</if>
+			<if test="foreNumber != null  ">#{foreNumber},</if>
+			<if test="userID != null  ">#{userID},</if>
+			<if test="nowNumber != null  ">#{nowNumber},</if>
+			<if test="orderID != null  ">#{orderID},</if>
+			<if test="lotteryExp != null  ">#{lotteryExp},</if>
+			<if test="oneMaxPriz != null  ">#{oneMaxPriz},</if>
+			<if test="status != null  ">#{status},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updatePrize" parameterType="Prize">
+        update prize
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null  and name != ''  ">`name` = #{name},</if>
+            <if test="number != null  ">`number` = #{number},</if>
+            <if test="pTNum != null  ">PTNum = #{pTNum},</if>
+            <if test="beginDate != null  ">BeginDate = #{beginDate},</if>
+            <if test="endDate != null  ">EndDate = #{endDate},</if>
+            <if test="foreNumber != null  ">ForeNumber = #{foreNumber},</if>
+            <if test="userID != null  ">UserID = #{userID},</if>
+            <if test="nowNumber != null  ">NowNumber = #{nowNumber},</if>
+            <if test="orderID != null  ">OrderID = #{orderID},</if>
+            <if test="lotteryExp != null  ">LotteryExp = #{lotteryExp},</if>
+            <if test="oneMaxPriz != null  ">OneMaxPriz = #{oneMaxPriz},</if>
+            <if test="status != null  ">status = #{status},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deletePrizeById" parameterType="Integer">
+        delete from prize where id = #{id}
+    </delete>
+	
+    <delete id="deletePrizeByIds" parameterType="String">
+        delete from prize where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

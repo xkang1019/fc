@@ -1,0 +1,456 @@
+<!DOCTYPE HTML>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>soulmate</title>
+
+    <meta charset="utf-8">
+    <meta name="apple-touch-fullscreen" content="YES">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta http-equiv="Expires" content="-1">
+    <meta http-equiv="pragram" content="no-cache">
+    <link rel="stylesheet" th:href="@{/css/fc/reset.min.css}">
+    <link rel="stylesheet" th:href="@{/css/fc/style.css}">
+    <haed>
+        <style>
+
+            a{
+                text-decoration:none;
+                color: #502627
+            }
+            .button{
+                background-color: #93696a;
+                border-radius:25px;
+                width: 100px;
+                text-align: center;
+                margin: 0;
+            }
+            img {
+                width: 100%;
+                background-size: contain;
+
+            }
+            /*公告*/
+            #notice{
+                width: 100%;
+                background-color: #824a4b;
+                color: aliceblue;
+                margin-top: 20px;
+                height:80px;
+                padding-top: 10px;
+                padding-left: 10px;
+                border-radius:8px;
+            }
+            #noticeImg{
+                width: 100%;
+                background-color: #824a4b;
+                margin-top: 20px;
+                border-radius:8px;
+                padding-top: 5%;
+                padding-bottom: 5%;
+            }
+
+            #noticeImg img{
+                width:90%;			/* ... */
+                height:100%;		/* ... */
+                display:block;	/* ... */
+                margin-left: 5%;
+            }
+
+            #Choice{
+                width: 100%;
+                height: 500px;
+                background-color: #824a4b;
+                margin-top: 20px;
+                border-radius:8px;
+            }
+            #popBox{
+                position: absolute;
+                display:none;
+                width:90%;
+                height:80%;
+                left:5%;
+                top:10%;
+                z-index:11;
+                background: #827b76;
+                border-radius:25px;
+            }
+            /*领取奖品弹出框*/
+            #prize{
+                position: absolute;
+                display:none;
+                width:90%;
+                height:300px;
+                left:5%;
+                top:30%;
+                z-index:11;
+            }
+            #imgPrize{
+                height: 100%;
+            }
+
+            #popLayer{
+                position: absolute;
+                display:none;
+                left:0;
+                top:0;
+                z-index:10;
+                background: #140809;
+                -moz-opacity: 0.8;
+                opacity:.80;
+                filter: alpha(opacity=80);/* 只支持IE6、7、8、9 */
+            }
+            .buttonPrize{
+                width: 50%;
+                height: 30px;
+                background-color: #dddddd;
+                text-align: center;
+                float: left;
+                vertical-align:middle;
+                font-size: 18px;
+                padding-top: 8px;
+
+            }
+
+            #imgbox{
+                height: 80%;width: 94%;
+                margin-top: 4%;
+                margin-left: 3%;
+            }
+
+            #imgbox img{
+                width:100%;			/* ... */
+                height:100%;		/* ... */
+                display:block;	/* ... */
+            }
+
+
+            td{
+                width: 26%;
+            }
+
+            *{margin:0px;padding:0px;}
+            body{background:#000;}
+            /* music */
+            @-webkit-keyframes reverseRotataZ{
+                0%{-webkit-transform: rotateZ(0deg);}
+                100%{-webkit-transform: rotateZ(-360deg);}
+            }
+            @-webkit-keyframes rotataZ{
+                0%{-webkit-transform: rotateZ(0deg);}
+                100%{-webkit-transform: rotateZ(360deg);}
+            }
+            #musicControl { position:fixed;left:20px;top:20px;margin-top:0;display:inline-block;z-index:99999999}
+            #musicControl a { display:inline-block;width: 25px; height: 25px;overflow:hidden;background:url('/images/mcbg.png') no-repeat;background-size:100%;}
+            #musicControl a audio{width:100%;height:56px;}
+            #musicControl a.stop { background-position:left bottom;}
+            #musicControl a.on { background-position:0px 1px;-webkit-animation: reverseRotataZ 1.2s linear infinite;}
+            #music_play_filter{width:100%;height:100%;overflow:hidden;position:fixed;top:0;left:0;z-index:99999998;}
+
+
+
+
+        </style>
+    </haed>
+
+    <script th:src="@{/js/fc/js/jquery-3.3.1/jquery-3.3.1.js}"></script>
+    <script  th:src="@{/js/fc/js/index.js}"></script>
+    <script  th:src="@{/js/fc/js/offline.js}"></script><!--移动端版本兼容 -->
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <script type="text/javascript">
+        var mengvalue = -1;
+        //if(mengvalue<0){mengvalue=0;}
+        var phoneWidth = parseInt(window.screen.width);
+        var phoneScale = phoneWidth / 640;
+
+        var ua = navigator.userAgent;
+        if (/Android (\d+\.\d+)/.test(ua)) {
+            var version = parseFloat(RegExp.$1);
+            // andriod 2.3
+            if (version > 2.3) {
+                document.write('<meta name="viewport" content="width=640, minimum-scale = ' + phoneScale + ', maximum-scale = ' + phoneScale + ', target-densitydpi=device-dpi">');
+                // andriod 2.3以上
+            } else {
+                document.write('<meta name="viewport" content="width=640, target-densitydpi=device-dpi">');
+            }
+            // 其他系统
+        } else {
+            document.write('<meta name="viewport" content="width=640, user-scalable=no, target-densitydpi=device-dpi">');
+        }
+    </script>
+
+    <meta name="viewport" content="width=640, user-scalable=no, target-densitydpi=device-dpi"><!--移动端版本兼容 end -->
+
+
+<body id="body" class="s-bg-ddd pc no-3d" style="-webkit-user-select: none;background-color: #67292c" onload="init()" >
+<div id="music">
+<span id="musicControl">
+ <a id="mc_play" class="on" onclick="play_music()" style="height: 50px;width: 50px">
+     <audio loop src="/music/5417e3ba4295f.mp3" id="audio" autoplay preload="auto">该浏览器不支持audio属性</audio>
+ </a>
+ </span>
+</div>
+<div style="width: 100%" >
+    <div style="height: 70px;width: 100%;font-size: 18px;">
+        <div style="float: right;margin-right: 20px;margin-top: 30px">
+           <a href="javascript:history.back(-1)"><div class="button">返回活动</div></a>
+        </div>
+    </div>
+    <div style="width: 80%;margin-left: 10%">
+        <img src="/images/20181027124419.png"/>
+       <div  id="notice" >
+           <p>兑奖提示</p>
+           <p>兑奖时请将此页面出示给营销中心工作人员，由工作人员完成操作</p>
+           <p>时间：2018年10月12日 - 2018年10月28日</p>
+       </div>
+        <div id="noticeImg" >
+          <img src="/images/20181027154524.jpg" />
+        </div>
+        <div  class="box warp" id="Choice" >
+            <div class="tab-wrapper" style="width: 100%;padding-top: 10px">
+                <ul class="tab-menu" >
+                    <li class="active" style="text-align: center">未领奖</li>
+                    <li style="text-align: center">已领奖</li>
+                    <li style="text-align: center">已失效</li>
+                </ul>
+
+                <div class="tab-content">
+                    <div>
+                        <table style="width: 100%;text-align: center">
+                            <tr>
+                                <td>奖品名称</td>
+                                <td>中奖时间</td>
+                                <td>操作</td>
+                            </tr>
+
+                            <tr  th:each="prize,prizeStat : ${prizeList}" th:if="${prize.status ==1}">
+                            <td th:text="${prize.pname}"></td>
+                                <td th:text="${#dates.format(prize.datetime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                                <td>领取奖品</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div>
+                        <table style="width: 100%;text-align: center">
+                            <tr>
+                                <td>奖品名称</td>
+                                <td>中奖时间</td>
+                                <td>操作</td>
+                            </tr>
+                            <tr  th:each="prize,prizeStat : ${prizeList}" th:if="${prize.status ==2}">
+                                <td th:text="${prize.pname}"></td>
+                                <td th:text="${#dates.format(prize.datetime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                                <td>领取奖品</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div>
+                        <table style="width: 100%;text-align: center">
+                            <tr>
+                                <td>奖品名称</td>
+                                <td>中奖时间</td>
+                                <td>操作</td>
+                            </tr>
+                            <tr  th:each="prize,prizeStat : ${prizeList}" th:if="${prize.status ==3}">
+                                <td th:text="${prize.pname}"></td>
+                                <td th:text="${#dates.format(prize.datetime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                                <td>领取奖品</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div><!-- //tab-content -->
+
+            </div><!-- //tab-wrapper -->
+
+
+        </div>
+    </div>
+
+</div>
+
+<div id="popLayer"  onclick="closeBox(),closePrize()">
+
+</div>
+
+<div id="popBox" >
+    <div id="imgbox" >
+        <img src="/images/20181027154524.jpg" /></div>
+</div>
+
+<div id="prize" >
+    <div id="imgPrize" >
+        <img src="/images/timg.jpg" />
+    </div>
+    <div style="width: 100%">
+        <div class="buttonPrize" id="receive" >领取奖品</div>
+        <div class="buttonPrize" id="again" >再来一次</div>
+    </div>
+</div>
+
+</body>
+<script type="text/javascript">
+    function popBox(){
+        var popBox = document.getElementById('popBox');
+        var popLayer = document.getElementById('popLayer');
+
+
+        popLayer.style.width = document.body.scrollWidth + "px";
+        popLayer.style.height = document.body.scrollHeight + "px";
+
+        popLayer.style.display = "block";
+        popBox.style.display = "block";
+
+    }
+
+    function closeBox(){
+        var popBox = document.getElementById('popBox');
+        var popLayer = document.getElementById('popLayer');
+        popLayer.style.display = "none";
+        popBox.style.display = "none";
+
+    }
+
+    function popPrize(){
+        var prize = document.getElementById('prize');
+        var popLayer = document.getElementById('popLayer');
+
+
+        popLayer.style.width = document.body.scrollWidth + "px";
+        popLayer.style.height = document.body.scrollHeight + "px";
+
+        popLayer.style.display = "block";
+        prize.style.display = "block";
+    }
+
+    function closePrize(){
+        var prize = document.getElementById('prize');
+        var popLayer = document.getElementById('popLayer');
+        popLayer.style.display = "none";
+        prize.style.display = "none";
+
+    }
+
+    function getPar(par){
+        //获取当前URL
+        var local_url = document.location.href;
+        //获取要取得的get参数位置
+        var get = local_url.indexOf(par +"=");
+        if(get == -1){
+            return false;
+        }
+        //截取字符串
+        var get_par = local_url.slice(par.length + get + 1);
+        //判断截取后的字符串是否还有其他get参数
+        var nextPar = get_par.indexOf("&");
+        if(nextPar != -1){
+            get_par = get_par.slice(0, nextPar);
+        }
+        return get_par;
+    }
+
+</script>
+
+
+
+<script>
+    //var src = "music/5417e3ba4295f.mp3";
+    // 初始化Aduio
+    var audio = document.getElementById('audio');
+    // audio.src = src;
+
+    function play_music() {
+        if(audio.paused){
+            audio.play();
+            $('#mc_play').attr('class','on');
+        }else{
+            audio.pause();
+            $('#mc_play').attr('class','stop');
+        }
+        // 音频文件
+    }
+
+    var a = 0;
+    $('#body').on('touchstart',function(){
+        if (a==0){
+            var pormise = audio.play();
+            pormise.then(function () {
+            }).catch(function (e) {
+                console.info('正在加载...')
+            })
+            if (!audio.paused){
+                a++
+            }
+        }
+
+    });
+</script>
+
+<script>
+    var SHAKE_THRESHOLD = 3000;
+    var last_update = 0;
+    var x = y = z = last_x = last_y = last_z = 0;
+    function init() {
+        if (window.DeviceMotionEvent) {
+            window.addEventListener('devicemotion', deviceMotionHandler, false);
+        } else {
+            alert('not support mobile event');
+        }
+    }
+    function deviceMotionHandler(eventData) {
+        var acceleration = eventData.accelerationIncludingGravity;
+        var curTime = new Date().getTime();
+        if ((curTime - last_update) > 100) {
+            var diffTime = curTime - last_update;
+            last_update = curTime;
+            x = acceleration.x;
+            y = acceleration.y;
+            z = acceleration.z;
+            var speed = Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * 30000;
+
+            if (speed > SHAKE_THRESHOLD) {
+                popPrize()
+            }
+            last_x = x;
+            last_y = y;
+            last_z = z;
+        }
+    }
+
+</script>
+
+<script>
+    $(document).ready(function() {
+        $(".menu_con").scroll(function(){//监听滚动事件
+            var nScrollTop = $(this)[0].scrollTop;//表示滚动条滚动的高度
+            var arrHeight = getHeight($('.mc_shop'));
+            var b = '';
+            $.each(arrHeight,function(index,value){
+                if(nScrollTop < value){
+                    b = index;
+                    return false;
+                }
+            });
+            $('.menu_nav ul li').removeClass('onn');
+            $('.menu_nav ul li').eq(b).addClass('onn');
+        });
+    });
+
+    function getHeight(mc_shop) {
+        var arr =  new Array();
+        mc_shop.each(function (index,element) {
+            if(index == 0){
+                arr[index] = $(element).height();
+            }else {
+                arr[index] = arr[index-1] + $(element).height();
+            }
+        });
+        return arr;
+    }
+
+
+</script>
+
+</html>

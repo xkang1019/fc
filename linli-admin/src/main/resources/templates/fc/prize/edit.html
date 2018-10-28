@@ -1,0 +1,101 @@
+<!DOCTYPE HTML>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-prize-edit" th:object="${prize}">
+            <input id="id" name="id" th:field="*{id}"  type="hidden">
+            <div class="form-group">	
+                <label class="col-sm-3 control-label">奖品名称：</label>
+                <div class="col-sm-8">
+                    <input id="name" name="name" th:field="*{name}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">	
+                <label class="col-sm-3 control-label">奖品数量：</label>
+                <div class="col-sm-8">
+                    <input id="number" name="number" th:field="*{number}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">	
+                <label class="col-sm-3 control-label">已经抽数量：</label>
+                <div class="col-sm-8">
+                    <input id="pTNum" name="pTNum" th:field="*{pTNum}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">	
+                <label class="col-sm-3 control-label">适用的开始时间：</label>
+                <div class="col-sm-8">
+                    <input id="beginDate" name="beginDate" th:field="*{beginDate}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">	
+                <label class="col-sm-3 control-label">适用的结束时间：</label>
+                <div class="col-sm-8">
+                    <input id="endDate" name="endDate" th:field="*{endDate}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">	
+                <label class="col-sm-3 control-label">在前多少位里面进行选取：</label>
+                <div class="col-sm-8">
+                    <input id="foreNumber" name="foreNumber" th:field="*{foreNumber}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">	
+                <label class="col-sm-3 control-label">指定用户中奖：</label>
+                <div class="col-sm-8">
+                    <input id="userID" name="userID" th:field="*{userID}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">	
+                <label class="col-sm-3 control-label">现在进行抽奖的人数：</label>
+                <div class="col-sm-8">
+                    <input id="nowNumber" name="nowNumber" th:field="*{nowNumber}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">	
+                <label class="col-sm-3 control-label">奖品优先率：</label>
+                <div class="col-sm-8">
+                    <input id="orderID" name="orderID" th:field="*{orderID}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">	
+                <label class="col-sm-3 control-label">领奖的有效时间：</label>
+                <div class="col-sm-8">
+                    <input id="lotteryExp" name="lotteryExp" th:field="*{lotteryExp}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">	
+                <label class="col-sm-3 control-label">每次中奖发放的奖品数量：</label>
+                <div class="col-sm-8">
+                    <input id="oneMaxPriz" name="oneMaxPriz" th:field="*{oneMaxPriz}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">	
+                <label class="col-sm-3 control-label">状态：</label>
+                <div class="col-sm-8">
+                    <input id="status" name="status" th:field="*{status}" class="form-control" type="text">
+                </div>
+            </div>
+		</form>
+    </div>
+    <div th:include="include::footer"></div>
+    <script type="text/javascript">
+		var prefix = ctx + "fc/prize"
+		$("#form-prize-edit").validate({
+			rules:{
+				xxxx:{
+					required:true,
+				},
+			}
+		});
+		
+		function submitHandler() {
+	        if ($.validate.form()) {
+	            $.operate.save(prefix + "/edit", $('#form-prize-edit').serialize());
+	        }
+	    }
+	</script>
+</body>
+</html>
