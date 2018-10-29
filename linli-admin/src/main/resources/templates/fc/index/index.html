@@ -1,7 +1,6 @@
 <!DOCTYPE HTML>
 <html  lang="zh" xmlns:th="http://www.thymeleaf.org">
 <meta charset="utf-8">
-<head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>soulmate</title>
 
@@ -76,6 +75,7 @@
                 vertical-align:middle;
                 font-size: 18px;
                 padding-top: 8px;
+                border-radius: 20px;
 
             }
 
@@ -157,13 +157,15 @@
         </div>
     </div>
     <div style="width: 80%;margin-left: 10%">
-    <img src="/images/20181027124419.png"/>
-    <img  onclick="selCount()"  src="/images/20181027124517.gif"/>
+        <img src="/images/20181029154442.png" style="margin-top: 30px"/>
+    <!--<img src="/images/20181027124419.png"/>-->
+        <!--onclick="selCount()"-->
+    <img    src="/images/20181027124517.gif"/>
     <div style="width: 60%;height: 70px;font-size: 18px;color: #dddddd;text-align: center;margin-left: 20%;margin-top: 20px;margin-bottom: 20px">
-        <p>您还有<span th:text="${prizeCount}">0</span>次机会</p>
+        <p>您还有<span th:text="${prizeCount}" id="prizeCount">0</span>次机会</p>
         <p>抽最新IphoneXSM，冰箱等缤纷家电大奖</p>
     </div>
-    <img src="/images/20181027124532.jpg"/>
+    <!--<img src="/images/20181027124532.jpg"/>-->
     <img src="/images/20181027132322.jpg"/>
     <img src="/images/20181027132328.jpg"/>
     <img src="/images/20181027132334.jpg"/>
@@ -178,19 +180,19 @@
 
 <div id="popBox" >
     <div id="imgbox" >
-        <img src="/images/20181027154524.jpg" /></div>
+        <img src="/images/20181027154524.jpg"  /></div>
 </div>
 
 <div id="prize" >
     <div id="imgPrize" >
-        <img id="imgPrizeInfo" src="/images/timg.jpg" />
+        <img id="imgPrizeInfo" src="/images/timg.jpg" style="width: 100%;height: 98%" />
     </div>
     <div style="width: 100%">
-        <div class="buttonPrize" id="receive" >领取奖品</div>
-        <div class="buttonPrize" id="again" >再来一次</div>
+        <div class="buttonPrize" id="receive" onclick="jumpUrl('/fc/index/usrPrize')" >领取奖品</div>
+        <div class="buttonPrize" id="again" onclick="closePrize()" >再来一次</div>
     </div>
 </div>
-
+    <input  id="times" name="times" value="-1" type="hidden" >
 </body>
 <script>
     $(function(){
@@ -239,8 +241,7 @@
                 //alert('click shared');
             },
             success: function (res) {
-                //alert('shared success');
-                //some thing you should do
+                addPrize(2)
             },
             cancel: function (res) {
                 //alert('shared cancle');
@@ -252,13 +253,14 @@
         //分享给好友
         wx.onMenuShareAppMessage({
             title: '测试下发给好友！', // 分享标题
-            desc: '瓜皮！', // 分享描述
+            desc: '测试！', // 分享描述
             link: link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
             imgUrl: 'http://fc.haichenpeisong.com/images/20181027124532.jpg', // 自定义图标
             type: 'link', // 分享类型,music、video或link，不填默认为link
             dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
             success: function () {
                 // 用户确认分享后执行的回调函数
+                addPrize(1)
             },
             cancel: function () {
                 // 用户取消分享后执行的回调函数
@@ -317,6 +319,10 @@
             "overflow-x":"auto",
             "overflow-y":"auto"
         });
+
+        var count = $("#prizeCount").text();
+        count = count - 1;
+        $("#prizeCount").html(count)
     }
 
     function getPar(par){
@@ -375,6 +381,7 @@
 </script>
 
 <script>
+    var times = -1; // 记录摇动次数
     var SHAKE_THRESHOLD = 3000;
     var last_update = 0;
     var x = y = z = last_x = last_y = last_z = 0;
@@ -394,19 +401,43 @@
             x = acceleration.x;
             y = acceleration.y;
             z = acceleration.z;
-            var speed = Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * 30000;
+            var speed = Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * 20000;
 
             if (speed > SHAKE_THRESHOLD) {
-                $(document.body).css({
-                    "overflow-x":"hidden",
-                    "overflow-y":"hidden"
-                });
-                selCount();
+                times++;
+                if (times==0){
+                  selCount();
+                }
             }
             last_x = x;
             last_y = y;
             last_z = z;
         }
+    }
+
+    function addPrize(typeparm) {
+        $.ajax({
+            url: '/fc/user/web/addPrize',
+            type: 'post',
+            dataType: 'json',
+            data: {type:typeparm},
+            success: function (res) {
+                console.info(res);
+                if (res.code===0){
+                    $("#prizeCount").html(res.prizeCount);
+                    times=-1;
+                    console.log(res)
+                }else{
+                    console.log(res)
+
+                }
+                alert('分享成功');
+            },
+            error: function (err) {
+
+            }
+
+        })
     }
 
 </script>
@@ -448,7 +479,7 @@
                 if (res.code!==0){
                     alert('今日已无抽奖次数');
                 }else {
-                    $("#imgPrizeInfo").src = res.prize.name;
+                    $("#imgPrizeInfo").attr("src",res.prize.pimg);
                     popPrize();
                 }
 
@@ -459,6 +490,15 @@
 
         })
     }
+
+
+
+    function jumpUrl(url) {
+         location.href = url
+    }
 </script>
+
+
+
 
 </html>

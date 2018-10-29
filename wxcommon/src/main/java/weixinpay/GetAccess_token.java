@@ -86,7 +86,7 @@ public class GetAccess_token {
      */
     public static  String getAccess_tokenJS(){
         String access_token;
-        boolean isAccess_token = RedisUtil.exists("access_token");
+        boolean isAccess_token = RedisUtil.exists("access_tokenJS");
 
         if (!isAccess_token) {
             String a = HttpUtil.sendGet(ACCESSURL, "grant_type=client_credential&appid=" + Configure.getAppidmm() + "&secret=" + Configure.getSecretmm());

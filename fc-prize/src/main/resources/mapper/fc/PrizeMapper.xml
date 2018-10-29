@@ -18,10 +18,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="lotteryExp"    column="LotteryExp"    />
         <result property="oneMaxPriz"    column="OneMaxPriz"    />
         <result property="status"    column="status"    />
+        <result property="probability"    column="probability"    />
+        <result property="pimg"    column="pimg"    />
+
+
     </resultMap>
 	
 	<sql id="selectPrizeVo">
-        select id, `name`, `number`, PTNum, BeginDate, EndDate, ForeNumber, UserID, NowNumber, OrderID, LotteryExp, OneMaxPriz, status from prize
+        select id, `name`, `number`, PTNum, BeginDate, EndDate, ForeNumber, UserID, NowNumber, OrderID, LotteryExp, OneMaxPriz, status,probability,pimg from prize
     </sql>
 	
     <select id="selectPrizeList" parameterType="Prize" resultMap="PrizeResult">
@@ -40,6 +44,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
              <if test="lotteryExp != null "> and LotteryExp = #{lotteryExp}</if>
              <if test="oneMaxPriz != null "> and OneMaxPriz = #{oneMaxPriz}</if>
              <if test="status != null "> and status = #{status}</if>
+
+
          </where>
     </select>
     
@@ -64,6 +70,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="lotteryExp != null  ">LotteryExp,</if>
 			<if test="oneMaxPriz != null  ">OneMaxPriz,</if>
 			<if test="status != null  ">status,</if>
+            <if test="probability != null  ">probability,</if>
+            <if test="pimg != null  ">pimg,</if>
+
+
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="id != null  ">#{id},</if>
@@ -79,6 +89,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="lotteryExp != null  ">#{lotteryExp},</if>
 			<if test="oneMaxPriz != null  ">#{oneMaxPriz},</if>
 			<if test="status != null  ">#{status},</if>
+            <if test="probability != null  ">#{probability},</if>
+            <if test="pimg != null  ">#{pimg},</if>
+
          </trim>
     </insert>
 	 
@@ -97,6 +110,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="lotteryExp != null  ">LotteryExp = #{lotteryExp},</if>
             <if test="oneMaxPriz != null  ">OneMaxPriz = #{oneMaxPriz},</if>
             <if test="status != null  ">status = #{status},</if>
+            <if test="probability != null  ">probability = #{probability},</if>
+            <if test="pimg != null  ">pimg = #{pimg},</if>
         </trim>
         where id = #{id}
     </update>

@@ -148,6 +148,9 @@ public interface ISysUserService
     public int selectUserPrizeCountById(Long userId);
 
 
+    public int  selectUserSumPrizeCountById(Long userId);
+
+
     /**
      * 刷新抽奖次数
      * @return

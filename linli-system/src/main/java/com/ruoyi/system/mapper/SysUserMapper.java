@@ -115,6 +115,13 @@ public interface SysUserMapper
     public int selectUserPrizeCountById(Long userId);
 
     /**
+     * 查询总奖次数
+     * @param userId
+     * @return
+     */
+    public int  selectUserSumPrizeCountById(Long userId);
+
+    /**
      * 刷新抽奖次数
      * @return
      */

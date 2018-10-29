@@ -14,7 +14,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 	
 	<sql id="selectRecordVo">
-        select id, uid, uname, type, dateTime, uimg from prize_record
+        select id, uid, uname, `type`, dateTime, uimg from prize_record
     </sql>
 	
     <select id="selectRecordList" parameterType="Record" resultMap="RecordResult">
@@ -40,17 +40,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="id != null  ">id,</if>
 			<if test="uid != null  ">uid,</if>
 			<if test="uname != null  and uname != ''  ">uname,</if>
-			<if test="type != null  ">type,</if>
-			<if test="dateTime != null  ">dateTime,</if>
+			<if test="type != null  ">`type`,</if>
 			<if test="uimg != null  and uimg != ''  ">uimg,</if>
+            dateTime
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="id != null  ">#{id},</if>
 			<if test="uid != null  ">#{uid},</if>
 			<if test="uname != null  and uname != ''  ">#{uname},</if>
 			<if test="type != null  ">#{type},</if>
-			<if test="dateTime != null  ">#{dateTime},</if>
 			<if test="uimg != null  and uimg != ''  ">#{uimg},</if>
+            sysdate()
          </trim>
     </insert>
 	 

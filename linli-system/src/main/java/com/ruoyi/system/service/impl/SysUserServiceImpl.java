@@ -352,6 +352,11 @@ public class SysUserServiceImpl implements ISysUserService
     }
 
     @Override
+    public int selectUserSumPrizeCountById(Long userId) {
+        return userMapper.selectUserSumPrizeCountById(userId);
+    }
+
+    @Override
     public int updateUserPrizeCount() {
         return userMapper.updateUserPrizeCount();
     }

@@ -42,6 +42,11 @@ public class Prize extends BaseEntity
 	private Integer oneMaxPriz;
 	/** 状态 */
 	private Integer status;
+	/*
+	 */
+	private float probability;
+
+	private String pimg;
 
 	public void setId(Integer id) 
 	{
@@ -161,7 +166,24 @@ public class Prize extends BaseEntity
 		return status;
 	}
 
-    public String toString() {
+	public float getProbability() {
+		return probability;
+	}
+
+	public void setProbability(float probability) {
+		this.probability = probability;
+	}
+
+	public String getPimg() {
+		return pimg;
+	}
+
+	public void setPimg(String pimg) {
+		this.pimg = pimg;
+	}
+
+	@Override
+	public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("id", getId())
             .append("name", getName())
@@ -178,4 +200,6 @@ public class Prize extends BaseEntity
             .append("status", getStatus())
             .toString();
     }
+
+
 }

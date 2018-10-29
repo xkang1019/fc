@@ -44,6 +44,20 @@
 					field : 'name', 
 					title : '奖品名称' 
 				},
+					{
+					    field : 'pimg',
+                        title : '奖品图片',
+                        formatter: function(value, row, index) {
+                            var actions = [];
+                            actions.push('<img src="'+value+'" alt="" style="width: 200px;height: 70px">');
+                            return actions.join('');
+                        }
+
+                    },
+					{
+                        field : 'probability',
+                        title : '奖品概率'
+                    },
 				{
 					field : 'number', 
 					title : '奖品数量' 

@@ -56,7 +56,7 @@ public class FcIndexConteroller extends BaseController {
     public String userPrize(ModelMap modelMap)
     {
         User user = new User();
-       // user.setUid(Math.toIntExact(getUserId()));
+        user.setUid(Math.toIntExact(getUserId()));
         modelMap.put("prizeList",userService.selectUserList(user));
         return prefix + "/usrPrize";
     }

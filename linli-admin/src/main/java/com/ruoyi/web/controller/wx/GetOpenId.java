@@ -299,6 +299,7 @@ public class GetOpenId extends BaseController {
 			user.setRoleIds(new Long[]{2L});
 			user.setPostIds(new Long[]{4L});
 			user.setPrize(1);
+			user.setSumprize(2);
 			if (userService.insertUser(user)>0) {
 				L.info("用户注册成功--------------------");
 			}else {

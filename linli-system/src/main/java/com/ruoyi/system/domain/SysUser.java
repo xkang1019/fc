@@ -82,6 +82,8 @@ public class SysUser extends BaseEntity
     private Long[] postIds;
 
     private Integer prize;
+    /*总抽奖次数*/
+    private Integer sumprize;
 
     public Long getUserId()
     {
@@ -289,6 +291,15 @@ public class SysUser extends BaseEntity
 
     public void setPrize(Integer prize) {
         this.prize = prize;
+    }
+
+
+    public Integer getSumprize() {
+        return sumprize;
+    }
+
+    public void setSumprize(Integer sumprize) {
+        this.sumprize = sumprize;
     }
 
     @Override
