@@ -5,13 +5,13 @@
 <body class="gray-bg">
     <div class="container-div">
 		<div class="btn-group-sm hidden-xs" id="toolbar" role="group">
-			<a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="module:prize:add">
+			<a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="fc:prize:add">
 				<i class="fa fa-plus"></i> 添加
 			</a>
-			<a class="btn btn-primary btn-edit disabled" onclick="$.operate.edit()" shiro:hasPermission="module:prize:edit">
+			<a class="btn btn-primary btn-edit disabled" onclick="$.operate.edit()" shiro:hasPermission="fc:prize:edit">
 	            <i class="fa fa-edit"></i> 修改
 	        </a>
-			<a class="btn btn-danger btn-del btn-del disabled" onclick="$.operate.removeAll()" shiro:hasPermission="module:prize:remove">
+			<a class="btn btn-danger btn-del btn-del disabled" onclick="$.operate.removeAll()" shiro:hasPermission="fc:prize:remove">
 				<i class="fa fa-remove"></i> 删除
 			</a>
 		</div>
@@ -22,8 +22,8 @@
     </div>
     <div th:include="include :: footer"></div>
     <script th:inline="javascript">
-        var editFlag = [[${@permission.hasPermi('module:prize:edit')}]];
-        var removeFlag = [[${@permission.hasPermi('module:prize:remove')}]];
+        var editFlag = [[${@permission.hasPermi('fc:prize:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('fc:prize:remove')}]];
         var prefix = ctx + "fc/prize";
 
         $(function() {

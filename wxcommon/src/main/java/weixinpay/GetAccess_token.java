@@ -14,8 +14,7 @@ import weixinpay.model.TemplateInfo;
  */
 
 public class GetAccess_token {
-
-    private static Logger logger = LoggerFactory.getLogger(GetAccess_token.class);
+    private static final Logger logger = LoggerFactory.getLogger("GetAccess_token");
 
     private static String ACCESSURL="https://api.weixin.qq.com/cgi-bin/token" ;//获取access链接
     private static String MENDMESSAGEFWH="https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=";
@@ -87,7 +86,7 @@ public class GetAccess_token {
     public static  String getAccess_tokenJS(){
         String access_token;
         boolean isAccess_token = RedisUtil.exists("access_tokenJS");
-
+        logger.info("isAccess_token",isAccess_token);
         if (!isAccess_token) {
             String a = HttpUtil.sendGet(ACCESSURL, "grant_type=client_credential&appid=" + Configure.getAppidmm() + "&secret=" + Configure.getSecretmm());
             JSONObject jsonObject = JSONObject.parseObject(a);
@@ -104,6 +103,7 @@ public class GetAccess_token {
     public static  String getJsapi_ticket(){
         String jsapi_ticket ;
       boolean   isJsapi_ticket = RedisUtil.exists("jsapi_ticket");
+        logger.info("isJsapi_ticket",isJsapi_ticket);
         if (!isJsapi_ticket) {
             String a = HttpUtil.sendGet(JSIPA_TICKET, "access_token="+getAccess_tokenJS()+"&type=jsapi");
             JSONObject jsonObject = JSONObject.parseObject(a);

@@ -176,15 +176,17 @@ public class UserController extends BaseController
 		user.setUid(Math.toIntExact(getUserId()));
 		user.setDatetime(new Date());
 		int sum = iSysUserService.selectUserSumPrizeCountById(getUserId());
-		if (sum<=0){
-			return  error("分享成功");
-		}
 		Record record = new Record();
 		record.setUid(Math.toIntExact(getUserId()));
 		record.setUname("微信用户");
+		record.setType(type);
+		if (sum<=0){
+			recordService.insertRecord(record);
+			return  error("分享成功");
+		}
+
 
 		if (type.equals(FcIndexConteroller.userType1)){
-			record.setType(1);
 			recordService.insertRecord(record);
 			 record.setDateTime(new Date());
 			 List<Record> list = recordService.selectRecordList(record);
@@ -195,7 +197,6 @@ public class UserController extends BaseController
 			 }
 		}
 		if (type.equals(FcIndexConteroller.userType2)){
-			record.setType(2);
 			recordService.insertRecord(record);
 			record.setDateTime(new Date());
 			List<Record> list = recordService.selectRecordList(record);

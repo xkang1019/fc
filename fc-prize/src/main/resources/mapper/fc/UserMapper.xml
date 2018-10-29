@@ -51,7 +51,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="datetime != null  ">datetime,</if>
 			<if test="status != null  ">status,</if>
 			<if test="password != null  and password != ''  ">password,</if>
-			<if test="receiveTime != null  ">receiveTime,</if>
+            receiveTime
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="id != null  ">#{id},</if>
@@ -62,7 +62,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="datetime != null  ">#{datetime},</if>
 			<if test="status != null  ">#{status},</if>
 			<if test="password != null  and password != ''  ">#{password},</if>
-			<if test="receiveTime != null  ">#{receiveTime},</if>
+            sysdate()
          </trim>
     </insert>
 	 

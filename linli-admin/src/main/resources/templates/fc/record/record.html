@@ -50,7 +50,16 @@
 				},
 				{
 					field : 'type', 
-					title : '分享类型' 
+					title : '分享类型',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        if(value==1){
+                        actions.push('<span class="badge ">好友</span>');
+                        }else {
+                            actions.push('<span class="badge ">朋友圈</span>');
+						}
+                        return actions.join('');
+                    }
 				},
 				{
 					field : 'dateTime', 

@@ -401,11 +401,11 @@
             x = acceleration.x;
             y = acceleration.y;
             z = acceleration.z;
-            var speed = Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * 20000;
+            var speed = Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * 40000;
 
             if (speed > SHAKE_THRESHOLD) {
                 times++;
-                if (times==0){
+                if (times===0){
                   selCount();
                 }
             }
@@ -415,23 +415,22 @@
         }
     }
 
-    function addPrize(typeparm) {
+    function selCount() {
         $.ajax({
-            url: '/fc/user/web/addPrize',
+            url: '/fc/user/web/prizeStart',
             type: 'post',
+            headers: {"Content-Type":"application/json"},
             dataType: 'json',
-            data: {type:typeparm},
             success: function (res) {
                 console.info(res);
-                if (res.code===0){
-                    $("#prizeCount").html(res.prizeCount);
+                if (res.code!==0){
+                    alert('今日已无抽奖次数');
+                }else {
+                    $("#imgPrizeInfo").attr("src",res.prize.pimg);
+                    popPrize();
                     times=-1;
-                    console.log(res)
-                }else{
-                    console.log(res)
-
                 }
-                alert('分享成功');
+
             },
             error: function (err) {
 
@@ -468,21 +467,26 @@
 </script>-->
 
 <script>
-    function selCount() {
+
+
+
+    function addPrize(typeparm) {
         $.ajax({
-            url: '/fc/user/web/prizeStart',
+            url: '/fc/user/web/addPrize',
             type: 'post',
-            headers: {"Content-Type":"application/json"},
             dataType: 'json',
+            data: {type:typeparm},
             success: function (res) {
                 console.info(res);
-                if (res.code!==0){
-                    alert('今日已无抽奖次数');
-                }else {
-                    $("#imgPrizeInfo").attr("src",res.prize.pimg);
-                    popPrize();
-                }
+                if (res.code===0){
+                    $("#prizeCount").html(res.prizeCount);
 
+                    console.log(res)
+                }else{
+                    console.log(res)
+
+                }
+                alert('分享成功');
             },
             error: function (err) {
 
@@ -490,9 +494,6 @@
 
         })
     }
-
-
-
     function jumpUrl(url) {
          location.href = url
     }

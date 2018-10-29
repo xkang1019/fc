@@ -97,6 +97,7 @@ public class OnlineSessionDAO extends EnterpriseCacheSessionDAO
             }
         }
         onlineSession.setAttribute(LAST_SYNC_DB_TIMESTAMP, onlineSession.getLastAccessTime());
+        update(onlineSession);
         // 更新完后 重置标识
         if (onlineSession.isAttributeChanged())
         {
