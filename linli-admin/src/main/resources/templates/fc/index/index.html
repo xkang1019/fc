@@ -464,9 +464,9 @@
                 times++;
                 if (times===0){
                     if (navigator.vibrate) {
-                        navigator.vibrate(2000);
+                        navigator.vibrate(500);
                     } else if (navigator.webkitVibrate) {
-                        navigator.webkitVibrate(2000);
+                        navigator.webkitVibrate(500);
                     }
                     shakingAudioFun();
                     selCount();
