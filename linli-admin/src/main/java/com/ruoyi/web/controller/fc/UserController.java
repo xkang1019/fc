@@ -270,7 +270,20 @@ public class UserController extends BaseController
 
   }
 
+	public static void main(String[] args) {
+		int a  = 10 >> 1;
+		System.out.println(a);
+	}
 
 
-	
+
+	@PostMapping("/web/edit")
+	@ResponseBody
+	public AjaxResult webEditSave(User user)
+	{
+		user.setStatus(2);
+		return toAjax(userService.updateUser(user));
+	}
+
+
 }

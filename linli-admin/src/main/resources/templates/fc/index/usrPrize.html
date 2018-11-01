@@ -28,6 +28,23 @@
                 text-align: center;
                 margin: 0;
             }
+
+
+            .login-button { /* 按钮美化 */
+                width: 70%; /* 宽度 */
+                height: 100%; /* 高度 */
+                border-width: 0px; /* 边框宽度 */
+                border-radius: 3px; /* 边框半径 */
+                background: #1E90FF; /* 背景颜色 */
+                cursor: pointer; /* 鼠标移入按钮范围时出现手势 */
+                outline: none; /* 不显示轮廓线 */
+                font-family: Microsoft YaHei; /* 设置字体 */
+                color: white; /* 字体颜色 */
+                font-size: 17px; /* 字体大小 */
+
+            }
+
+
             img {
                 width: 100%;
                 background-size: contain;
@@ -132,6 +149,7 @@
                 width: 26%;
             }
 
+
             *{margin:0px;padding:0px;}
             body{background:#000;}
             /* music */
@@ -159,6 +177,7 @@
     <script th:src="@{/js/fc/js/jquery-3.3.1/jquery-3.3.1.js}"></script>
     <script  th:src="@{/js/fc/js/index.js}"></script>
     <script  th:src="@{/js/fc/js/offline.js}"></script><!--移动端版本兼容 -->
+    <script th:src="@{/ajax/libs/layer_mobile/layer.js}"></script>
     <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
     <script type="text/javascript">
         var mengvalue = -1;
@@ -220,7 +239,7 @@
 
                 <div class="tab-content">
                     <div>
-                        <table style="width: 100%;text-align: center">
+                        <table style="width: 100%;text-align: center;border-collapse:separate; border-spacing:10px;">
                             <tr>
                                 <td>奖品名称</td>
                                 <td>中奖时间</td>
@@ -230,35 +249,35 @@
                             <tr  th:each="prize,prizeStat : ${prizeList}" th:if="${prize.status ==1}">
                             <td th:text="${prize.pname}"></td>
                                 <td th:text="${#dates.format(prize.datetime, 'yyyy-MM-dd HH:mm:ss')}"></td>
-                                <td>领取奖品</td>
+                                <td><button class="login-button" th:onclick="'javascript:layshow(\''+${prize.pid}+'\',\''+${prize.id}+'\')'">领取奖品</button></td>
                             </tr>
                         </table>
                     </div>
                     <div>
-                        <table style="width: 100%;text-align: center">
+                        <table style="width: 100%;text-align: center;border-collapse:separate; border-spacing:10px;">
                             <tr>
                                 <td>奖品名称</td>
                                 <td>中奖时间</td>
-                                <td>操作</td>
+                                <td>状态</td>
                             </tr>
                             <tr  th:each="prize,prizeStat : ${prizeList}" th:if="${prize.status ==2}">
                                 <td th:text="${prize.pname}"></td>
                                 <td th:text="${#dates.format(prize.datetime, 'yyyy-MM-dd HH:mm:ss')}"></td>
-                                <td>领取奖品</td>
+                                <td>已领取</td>
                             </tr>
                         </table>
                     </div>
                     <div>
-                        <table style="width: 100%;text-align: center">
+                        <table style="width: 100%;text-align: center;border-collapse:separate; border-spacing:10px;">
                             <tr>
                                 <td>奖品名称</td>
                                 <td>中奖时间</td>
-                                <td>操作</td>
+                                <td>状态</td>
                             </tr>
                             <tr  th:each="prize,prizeStat : ${prizeList}" th:if="${prize.status ==3}">
                                 <td th:text="${prize.pname}"></td>
                                 <td th:text="${#dates.format(prize.datetime, 'yyyy-MM-dd HH:mm:ss')}"></td>
-                                <td>领取奖品</td>
+                                <td>已失效</td>
                             </tr>
                         </table>
                     </div>
@@ -561,7 +580,55 @@
         return arr;
     }
 
+   function layshow(pid,id) {
+       layer.open({
+           content: '请输入兑换码：<br><br>' +
+           '<input id="passwored" class="form-control" style="width: 70%;height: 30px "  type="text">'
+           ,btn: ['领取', '取消']
+           ,yes: function(index){
+              var  password =  $("#passwored").val();
+              if (password=='dh123456'){
+                  $.ajax({
+                      url: '/fc/user/web/edit',
+                      type: 'post',
+                      dataType: 'json',
+                      data: {id:id},
+                      success: function (res) {
+                          console.info(res);
+                          if (res.code===0){
 
+                              layer.open({
+                                  content: '领取成功'
+                                  ,skin: 'msg'
+                                  ,time: 2 //2秒后自动关闭
+                              });
+                              setTimeout("location.reload()",2000);
+                          }else{
+                              layer.open({
+                                  content: '兑换错误'
+                                  ,skin: 'msg'
+                                  ,time: 2 //2秒后自动关闭
+                              });
+
+                          }
+                      },
+                      error: function (err) {
+
+                      }
+                  });
+              }else {
+                  layer.open({
+                      content: '兑换码错误'
+                      ,skin: 'msg'
+                      ,time: 2 //2秒后自动关闭
+                  });
+              }
+
+
+               layer.close(index);
+           }
+       });
+   }
 </script>
 
 </html>
