@@ -19,10 +19,11 @@
                 color: #bda371
             }
             .button{
-              background-color: #71151b;
+                background-color: #71151b;
                 border-radius:4px;
-                width: 100px;
+                width: 140px;
                 text-align: center;
+                height: 28px;
                 margin: 0;
             }
             img {
@@ -68,15 +69,15 @@
                 filter: alpha(opacity=80);/* 只支持IE6、7、8、9 */
             }
             .buttonPrize{
-                width: 50%;
+                width: 42%;
                 height: 40px;
                 background-color: #d8232c;
                 text-align: center;
-                float: left;
                 vertical-align:middle;
-                font-size: 18px;
+                font-size: 25px;
                 padding-top: 8px;
-                border-radius: 7px;
+                border-radius: 6px;
+                color: #ffffff;
 
             }
 
@@ -115,13 +116,21 @@
             #musicControl a.stop { background-position:left bottom;}
             #musicControl a.on { background-position:0px 1px;-webkit-animation: reverseRotataZ 1.2s linear infinite;}
             #music_play_filter{width:100%;height:100%;overflow:hidden;position:fixed;top:0;left:0;z-index:99999998;}
+
+            #myButton{
+                position:absolute;
+                display:inline-block;
+                z-index:99999999;
+                top:20px;
+                left:75%;
+            }
         </style>
     </haed>
 
 
     <script th:src="@{/js/fc/js/jquery-3.3.1/jquery-3.3.1.js}"></script>
     <script th:src="@{/js/fc/js/offline.js}"></script><!--移动端版本兼容 -->
-    <script th:src="@{/ajax/libs/layer_mobile/layer.js}"></script>
+    <script th:src="@{/ajax/libs/layer/layer.min.js}"></script>
     <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
     <script type="text/javascript">
         var mengvalue = -1;
@@ -157,8 +166,8 @@
  </span>
 </div>
 <div style="width: 100%" >
-    <div style="height: 70px;width: 100%;font-size: 18px;">
-        <div style="float: right;margin-right: 20px;margin-top: 30px">
+    <div >
+        <div id="myButton">
           <a href="/fc/index/usrPrize" onclick="jQuery('.box').hide()" class="close" ><div class="button" >我的奖品</div></a>
           <a href="javascript:;" onclick="popBox()" ><div class="button" style="margin-top: 5px">活动规则</div></a>
         </div>
@@ -167,13 +176,16 @@
         <img src="/images/16.jpg" />
     <!--<img src="/images/20181027124419.png"/>-->
         <!--onclick="selCount()"-->
-    <img    src="/images/17.jpg"/>
+    <img onclick="selCount()" src="/images/17.jpg"/>
         <audio  th:src="@{/music/load.mp3}" id="shakingAudio"  >该浏览器不支持audio属性</audio>
         <audio  th:src="@{/music/load.mp3}" id="shakingResult"  >该浏览器不支持audio属性</audio>
-    <div style="width: 60%;height: 70px;font-size: 18px;color: #dddddd;text-align: center;margin-left: 20%;margin-top: 20px;margin-bottom: 20px">
+        <div style="height: 70px;width: 100%;background-image: url('/images/123.png');background-size:100%">
+    <div style="width: 60%;height: 100%;font-size: 18px;color: #dddddd;text-align: center;margin-left: 20%">
+
         <p>您还有<span th:text="${prizeCount}" id="prizeCount">0</span>次机会</p>
-        <p>抽最新IphoneXSM，冰箱等缤纷家电大奖</p>
+        <p>抽最新IphoneXS，冰箱等缤纷家电大奖</p>
     </div>
+        </div>
     <!--<img src="/images/20181027124532.jpg"/>-->
     <img src="/images/18.jpg"/>
     <img src="/images/19.jpg"/>
@@ -183,8 +195,9 @@
         <img src="/images/23.jpg"/>
         <img src="/images/24.jpg"/>
         <img src="/images/25.jpg"/>
+        <img src="/images/26.jpg"/>
     </div>
-    <div style="width: 60%;height: 70px;font-size: 18px;color: #ffffff;text-align: center;margin-left: 20%;margin-top: 20px;margin-bottom: 20px">
+    <div style="width: 60%;height: 70px;font-size: 18px;color: #ffffff;text-align: center;margin-left: 20%;margin-top: 20px">
 
     <span>咨询电话：0797-2928888</span>
         </br>
@@ -192,6 +205,7 @@
 
     </div>
 
+    <br>
 </div>
 
 <div id="popLayer"  onclick="closeBox(),closePrize()">
@@ -208,15 +222,17 @@
         <img id="imgPrizeInfo" src="/images/timg.jpg" style="width: 100%;height: 98%" />
     </div>
     <div style="width: 100%">
-        <div class="buttonPrize" id="receive" onclick="jumpUrl('/fc/index/usrPrize')" >领取奖品</div>
-        <div class="buttonPrize" id="again" onclick="closePrize()" >再来一次</div>
+        <div class="buttonPrize" id="receive"  style="float: left" onclick="jumpUrl('/fc/index/usrPrize')" >领取奖品</div>
+        <div class="buttonPrize" id="again" onclick="closePrize()" style="float: right">再来一次</div>
     </div>
 </div>
     <input  id="times" name="times" value="-1" type="hidden" >
 </body>
 <script>
     $(function(){
-        layer.open({type: 2});
+        var index = layer.load(1, {
+            shade: [0.1,'#fff'] //0.1透明度的白色背景
+        });
         var url = location.href.split('#').toString();//url不能写死
         $.ajax({
             type : "get",
@@ -257,7 +273,7 @@
         wx.onMenuShareTimeline({
             title: '大华红樾山抽奖测试',
             link: link,
-            imgUrl: 'http://fc.haichenpeisong.com/images/20181027124532.jpg',// 自定义图标
+            imgUrl: 'http://fc.haichenpeisong.com/images/16.jpg',// 自定义图标
             trigger: function (res) {
                 // 不要尝试在trigger中使用ajax异步请求修改本次分享的内容，因为客户端分享操作是一个同步操作，这时候使用ajax的回包会还没有返回.
                 //alert('click shared');
@@ -277,7 +293,7 @@
             title: '大华红樾山抽奖测试', // 分享标题
             desc: ' ', // 分享描述
             link: link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-            imgUrl: 'http://fc.haichenpeisong.com/images/20181027124532.jpg', // 自定义图标
+            imgUrl: 'http://fc.haichenpeisong.com/images/16.jpg', // 自定义图标
             type: 'link', // 分享类型,music、video或link，不填默认为link
             dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
             success: function () {
@@ -506,6 +522,9 @@
     }
 
     function selCount() {
+        var index = layer.load(1, {
+            shade: [0.1,'#fff'] //0.1透明度的白色背景
+        });
         $.ajax({
             url: '/fc/user/web/prizeStart',
             type: 'post',
@@ -514,17 +533,19 @@
             success: function (res) {
                 console.info(res);
                 if (res.code!==0){
-                    alert('今日已无抽奖次数');
+                    layer.msg('今日已无抽奖次数,请分享再试');
                 }else {
                     shakingResultFun();
                     $("#imgPrizeInfo").attr("src",res.prize.pimg);
                     popPrize();
                     times=-1;
-                }
+                   // layer.close(layer.index);
 
+                }
+                layer.close(index);
             },
             error: function (err) {
-
+                layer.close(layer.index);
             }
 
         })
@@ -577,7 +598,7 @@
                     console.log(res)
 
                 }
-                alert('分享成功');
+                layer.msg('分享成功');
             },
             error: function (err) {
 
