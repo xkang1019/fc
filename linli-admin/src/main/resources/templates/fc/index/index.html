@@ -115,6 +115,7 @@
 
     <script th:src="@{/js/fc/js/jquery-3.3.1/jquery-3.3.1.js}"></script>
     <script th:src="@{/js/fc/js/offline.js}"></script><!--移动端版本兼容 -->
+    <script th:src="@{/ajax/libs/layer_mobile/layer.js}"></script>
     <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
     <script type="text/javascript">
         var mengvalue = -1;
@@ -199,6 +200,7 @@
 </body>
 <script>
     $(function(){
+        layer.open({type: 2});
         var url = location.href.split('#').toString();//url不能写死
         $.ajax({
             type : "get",
@@ -231,6 +233,7 @@
 
     wx.ready(function () {
         console.info('ready');
+        layer.close(layer.index);
         var link = 'http://fc.haichenpeisong.com/fc/index/jump';
         var protocol = window.location.protocol;
         var host = window.location.host;
