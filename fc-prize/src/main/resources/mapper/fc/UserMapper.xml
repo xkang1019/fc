@@ -34,6 +34,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
              <if test="receiveTime != null "> and receiveTime = #{receiveTime}</if>
          </where>
     </select>
+
+
+    <select id="selectOutList" parameterType="User" resultType="java.lang.String">
+        select id from prize_user
+        <where>
+            <if test="uid != null "> and uid = #{uid}</if>
+            <if test="datetime != null "> and `datetime`  &lt;= date_format(#{datetime},'%y-%m-%d %h:%m:%s')  </if>
+            <if test="status != null "> and status = #{status}</if>
+        </where>
+    </select>
+
     
     <select id="selectUserById" parameterType="Integer" resultMap="UserResult">
         <include refid="selectUserVo"/>
@@ -80,6 +91,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </trim>
         where id = #{id}
     </update>
+
+    <update id="updateUserStatus">
+        update prize_user set status = 3 where id in
+        <foreach item="uid" collection="array" open="(" separator="," close=")">
+            #{uid}
+        </foreach>
+    </update>
+
+
 
 	<delete id="deleteUserById" parameterType="Integer">
         delete from prize_user where id = #{id}

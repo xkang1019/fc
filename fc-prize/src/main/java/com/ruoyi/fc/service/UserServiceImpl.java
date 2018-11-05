@@ -79,5 +79,16 @@ public class UserServiceImpl implements IUserService
 	{
 		return userMapper.deleteUserByIds(Convert.toStrArray(ids));
 	}
-	
+
+	@Override
+	public int updateUserStatus(String[] uid) {
+		return userMapper.updateUserStatus(uid);
+	}
+
+	@Override
+	public String[] selectOutList(User user) {
+		return userMapper.selectOutList(user);
+	}
+
+
 }

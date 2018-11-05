@@ -3,6 +3,7 @@ package com.ruoyi.web.controller.fc;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.base.AjaxResult;
 import com.ruoyi.common.enums.BusinessType;
+import com.ruoyi.common.utils.DateUtil;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.fc.domain.Record;
 import com.ruoyi.fc.domain.User;
@@ -239,13 +240,15 @@ public class UserController extends BaseController
 		//遍历每个奖品，设置概率区间，总的概率区间为每个概率区间的总和
 		for (Prize award : prizeList) {
 			//每个概率区间为奖品概率乘以1000（把三位小数转换为整）再乘以剩余奖品数量
-			totalPro += award.getProbability() * 10 * award.getNumber();
+			totalPro += award.getProbability() * 1000 * award.getNumber();
 			proSection.add(totalPro);
 		}
 		//获取总的概率区间中的随机数
 		Random random = new Random();
 		float randomPro = (float)random.nextInt((int)totalPro);
 		//判断取到的随机数在哪个奖品的概率区间中
+
+
 		for (int i = 0,size = proSection.size(); i < size; i++) {
 			if(randomPro >= proSection.get(i)
 					&& randomPro < proSection.get(i + 1)){
@@ -271,8 +274,54 @@ public class UserController extends BaseController
   }
 
 	public static void main(String[] args) {
-		int a  = 10 >> 1;
-		System.out.println(a);
+		List<Prize> prizeList = new ArrayList<>(16);
+		Prize prize = new Prize();
+		prize.setId(1);
+		prize.setName("全自动雨伞");
+		prize.setNumber(20);
+		prize.setProbability((float) 0.1);
+
+		Prize prize1 = new Prize();
+		prize1.setId(2);
+		prize1.setName("LED");
+		prize1.setNumber(20);
+		prize1.setProbability((float) 0.1);
+
+		Prize prize2 = new Prize();
+		prize2.setId(3);
+		prize2.setName("儿童");
+		prize2.setNumber(100);
+		prize2.setProbability((float) 0.1);
+
+		Prize prize3 = new Prize();
+		prize3.setId(4);
+		prize3.setName("指甲");
+		prize3.setNumber(100);
+		prize3.setProbability((float) 0.1);
+
+		Prize prize4 = new Prize();
+		prize4.setId(5);
+		prize4.setName("环保袋");
+		prize4.setNumber(200);
+		prize4.setProbability((float) 0.1);
+
+		Prize prize5 = new Prize();
+		prize5.setId(6);
+		prize5.setName("抽纸22222");
+		prize5.setNumber(1000);
+		prize5.setProbability((float) 0.1);
+		prizeList.add(prize5);
+		prizeList.add(prize1);
+		prizeList.add(prize2);
+		prizeList.add(prize3);
+		prizeList.add(prize4);
+
+		prizeList.add(prize);
+		for (int a = 0 ; a<=100;a++){
+			regulation(prizeList);
+		}
+
+
 	}
 
 
@@ -281,6 +330,7 @@ public class UserController extends BaseController
 	@ResponseBody
 	public AjaxResult webEditSave(User user)
 	{
+		user.setReceiveTime(new Date());
 		user.setStatus(2);
 		return toAjax(userService.updateUser(user));
 	}

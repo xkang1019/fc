@@ -58,5 +58,18 @@ public interface UserMapper
      * @return 结果
      */
 	public int deleteUserByIds(String[] ids);
+
+	/**
+	 * 批量刷新过期奖品
+	 * @param uid
+	 * @return
+	 */
+	public int updateUserStatus(String[] uid);
+
+	/**
+	 * 查询24小时过期时间奖品ID
+	 * @return
+	 */
+	public  String[] selectOutList(User user);
 	
 }
