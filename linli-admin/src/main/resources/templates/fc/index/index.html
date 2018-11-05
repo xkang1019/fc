@@ -16,11 +16,11 @@
 
             a{
                 text-decoration:none;
-                color: #502627
+                color: #bda371
             }
             .button{
-              background-color: #93696a;
-                border-radius:25px;
+              background-color: #71151b;
+                border-radius:4px;
                 width: 100px;
                 text-align: center;
                 margin: 0;
@@ -28,6 +28,7 @@
             img {
                 width: 100%;
                 background-size: contain;
+                vertical-align: top;
 
             }
             #popBox{
@@ -68,14 +69,14 @@
             }
             .buttonPrize{
                 width: 50%;
-                height: 30px;
-                background-color: #dddddd;
+                height: 40px;
+                background-color: #d8232c;
                 text-align: center;
                 float: left;
                 vertical-align:middle;
                 font-size: 18px;
                 padding-top: 8px;
-                border-radius: 20px;
+                border-radius: 7px;
 
             }
 
@@ -99,7 +100,6 @@
                 margin-top: 5px;
             }
             *{margin:0px;padding:0px;}
-            body{background:#000;}
             /* music */
             @-webkit-keyframes reverseRotataZ{
                 0%{-webkit-transform: rotateZ(0deg);}
@@ -148,7 +148,7 @@
     <meta name="viewport" content="width=640, user-scalable=no, target-densitydpi=device-dpi"><!--移动端版本兼容 end -->
 
 
-<body id="body" class="s-bg-ddd pc no-3d" style="-webkit-user-select: none;background-color: #67292c" onload="init()" >
+<body id="body" class="s-bg-ddd pc no-3d" style="-webkit-user-select: none;background-color: #0a0a0a" onload="init()" >
 <div id="music">
 <span id="musicControl">
  <a id="mc_play" class="on" onclick="play_music()" style="height: 50px;width: 50px">
@@ -159,15 +159,15 @@
 <div style="width: 100%" >
     <div style="height: 70px;width: 100%;font-size: 18px;">
         <div style="float: right;margin-right: 20px;margin-top: 30px">
-          <a href="/fc/index/usrPrize" onclick="jQuery('.box').hide()" class="close" ><div class="button" >我的奖品</div></a><br>
-          <a href="javascript:;" onclick="popBox()"><div class="button">活动规则</div></a>
+          <a href="/fc/index/usrPrize" onclick="jQuery('.box').hide()" class="close" ><div class="button" >我的奖品</div></a>
+          <a href="javascript:;" onclick="popBox()" ><div class="button" style="margin-top: 5px">活动规则</div></a>
         </div>
     </div>
-    <div style="width: 80%;margin-left: 10%">
-        <img src="/images/20181029154442.png" style="margin-top: 30px"/>
+    <div style="width: 100%">
+        <img src="/images/16.jpg" />
     <!--<img src="/images/20181027124419.png"/>-->
         <!--onclick="selCount()"-->
-    <img    src="/images/20181027124517.gif"/>
+    <img    src="/images/17.jpg"/>
         <audio  th:src="@{/music/load.mp3}" id="shakingAudio"  >该浏览器不支持audio属性</audio>
         <audio  th:src="@{/music/load.mp3}" id="shakingResult"  >该浏览器不支持audio属性</audio>
     <div style="width: 60%;height: 70px;font-size: 18px;color: #dddddd;text-align: center;margin-left: 20%;margin-top: 20px;margin-bottom: 20px">
@@ -175,11 +175,14 @@
         <p>抽最新IphoneXSM，冰箱等缤纷家电大奖</p>
     </div>
     <!--<img src="/images/20181027124532.jpg"/>-->
-    <img src="/images/20181027132322.jpg"/>
-    <img src="/images/20181027132328.jpg"/>
-    <img src="/images/20181027132334.jpg"/>
-    <img src="/images/20181027132336.jpg"/>
-    <img src="/images/20181027132340.jpg"/>
+    <img src="/images/18.jpg"/>
+    <img src="/images/19.jpg"/>
+    <img src="/images/20.jpg"/>
+    <img src="/images/21.jpg"/>
+    <img src="/images/22.jpg"/>
+        <img src="/images/23.jpg"/>
+        <img src="/images/24.jpg"/>
+        <img src="/images/25.jpg"/>
     </div>
     <div style="width: 60%;height: 70px;font-size: 18px;color: #ffffff;text-align: center;margin-left: 20%;margin-top: 20px;margin-bottom: 20px">
 
@@ -197,7 +200,7 @@
 
 <div id="popBox" >
     <div id="imgbox" >
-        <img src="/images/20181027154524.jpg"  /></div>
+        <img src="/images/15.jpg"  /></div>
 </div>
 
 <div id="prize" >
