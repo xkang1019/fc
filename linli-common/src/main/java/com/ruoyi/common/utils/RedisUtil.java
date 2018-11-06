@@ -183,6 +183,27 @@ public final class RedisUtil {
         }
     }
 
+    public static boolean setnxLock(String key, String value, int lockExpire){
+        Jedis jedis = null;
+        try {
+            jedis = pool.getResource();
+            if(jedis.setnx(key, value)==1){
+                jedis.expire(key,lockExpire);
+                return true;
+            }else {
+                return false;
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            LOGGER.error(e.getMessage());
+            return false;
+        } finally {
+            returnResource(pool, jedis);
+        }
+    }
+
+
+
     /**
      * <p>设置key value并制定这个键值的有效期</p>
      * @param key
@@ -195,6 +216,7 @@ public final class RedisUtil {
         String res = null;
         try {
             jedis = pool.getResource();
+
             res = jedis.setex(key, seconds, value);
         } catch (Exception e) {
 

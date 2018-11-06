@@ -36,12 +36,12 @@
                 position: absolute;
                 display:none;
                 width:90%;
-                height:80%;
+                height:85%;
                 left:5%;
-                top:10%;
+                top:5%;
                 z-index:11;
-                background: #827b76;
-                border-radius:25px;
+                background: #71151b;
+                border-radius:7px;
             }
                 /*领取奖品弹出框*/
             #prize{
@@ -82,9 +82,9 @@
             }
 
             #imgbox{
-                height: 80%;width: 94%;
-                margin-top: 4%;
-                margin-left: 3%;
+                height: 95%;width: 98%;
+                margin-top: 1%;
+                margin-left: 1%;
             }
 
             #imgbox img{
@@ -123,6 +123,14 @@
                 z-index:99999999;
                 top:20px;
                 left:75%;
+            }
+
+            #msgUser{
+                width: 50%;
+                position:fixed;
+                top:20px;
+                left:50%;
+                z-index:99999999;
             }
         </style>
     </haed>
@@ -179,7 +187,7 @@
     <img onclick="selCount()" src="/images/17.jpg"/>
         <audio  th:src="@{/music/load.mp3}" id="shakingAudio"  >该浏览器不支持audio属性</audio>
         <audio  th:src="@{/music/load.mp3}" id="shakingResult"  >该浏览器不支持audio属性</audio>
-        <div style="height: 70px;width: 100%;background-image: url('/images/123.png');background-size:100%">
+        <div style="height: 70px;width: 100%;background-image: url('/images/123.jpg');background-size:100%">
     <div style="width: 60%;height: 100%;font-size: 18px;color: #dddddd;text-align: center;margin-left: 20%">
 
         <p>您还有<span th:text="${prizeCount}" id="prizeCount">0</span>次机会</p>
@@ -194,7 +202,6 @@
     <img src="/images/22.jpg"/>
         <img src="/images/23.jpg"/>
         <img src="/images/24.jpg"/>
-        <img src="/images/25.jpg"/>
         <img src="/images/26.jpg"/>
     </div>
     <div style="width: 60%;height: 70px;font-size: 18px;color: #ffffff;text-align: center;margin-left: 20%;margin-top: 20px">
@@ -208,8 +215,12 @@
     <br>
 </div>
 
-<div id="popLayer"  onclick="closeBox(),closePrize()">
+<div id="popLayer"  onclick="closeBox(),closePrize(),closeShowMsgUser()">
 
+</div>
+
+<div id="msgUser" style="display: none">
+    <img src="/images/guide1.png"  /></div>
 </div>
 
 <div id="popBox" >
@@ -231,7 +242,7 @@
 <script>
     $(function(){
         var index = layer.load(1, {
-            shade: [0.1,'#fff'] //0.1透明度的白色背景
+            shade: [0.1,'#fff']//0.1透明度的白色背景
         });
         var url = location.href.split('#').toString();//url不能写死
         $.ajax({
@@ -264,7 +275,6 @@
 
 
     wx.ready(function () {
-        console.info('ready');
         layer.close(layer.index);
         var link = 'http://fc.haichenpeisong.com/fc/index/jump';
         var protocol = window.location.protocol;
@@ -378,11 +388,21 @@
         var popLayer = document.getElementById('popLayer');
         popLayer.style.display = "none";
         prize.style.display = "none";
+    }
 
-
-        var count = $("#prizeCount").text();
-        count = count - 1;
-        $("#prizeCount").html(count)
+    function showMsgUser() {
+        var msgUser = document.getElementById('msgUser');
+        var popLayer = document.getElementById('popLayer');
+        popLayer.style.width = document.body.scrollWidth + "px";
+        popLayer.style.height = document.body.scrollHeight + "px";
+        msgUser.style.display = "block";
+        popLayer.style.display = "block";
+    }
+    function closeShowMsgUser() {
+        var msgUser = document.getElementById('msgUser');
+        var popLayer = document.getElementById('popLayer');
+        msgUser.style.display = "none";
+        popLayer.style.display = "none";
     }
 
     function getPar(par){
@@ -504,7 +524,7 @@
 
             if (speed > SHAKE_THRESHOLD) {
                 times++;
-                if (times===0){
+                if(times==0){
                     if (navigator.vibrate) {
                         navigator.vibrate(500);
                     } else if (navigator.webkitVibrate) {
@@ -512,8 +532,8 @@
                     }
                     shakingAudioFun();
                     selCount();
-
                 }
+
             }
             last_x = x;
             last_y = y;
@@ -531,21 +551,32 @@
             headers: {"Content-Type":"application/json"},
             dataType: 'json',
             success: function (res) {
+                layer.close(index);
                 console.info(res);
                 if (res.code!==0){
-                    layer.msg('今日已无抽奖次数,请分享再试');
+                    layer.alert('今日已无抽奖次数,请分享再试');
+                    showMsgUser();
+                    times=-1;
+
                 }else {
                     shakingResultFun();
                     $("#imgPrizeInfo").attr("src",res.prize.pimg);
                     popPrize();
                     times=-1;
-                   // layer.close(layer.index);
+                    //计算次数
+                    var count = $("#prizeCount").text();
+                    count = count - 1;
+                    $("#prizeCount").html(count)
+                    var count2 = $("#prizeCount").text();
+                    if(count2<0){
+                        $("#prizeCount").html(0)
 
+                    }
                 }
-                layer.close(index);
+
             },
             error: function (err) {
-                layer.close(layer.index);
+                layer.close(index);
             }
 
         })
@@ -591,6 +622,9 @@
             success: function (res) {
                 console.info(res);
                 if (res.code===0){
+                    if(res.prizeCount>=1){
+                        times=-1;
+                    }
                     $("#prizeCount").html(res.prizeCount);
 
                     console.log(res)
@@ -598,7 +632,7 @@
                     console.log(res)
 
                 }
-                layer.msg('分享成功');
+                layer.alert('分享成功');
             },
             error: function (err) {
 
