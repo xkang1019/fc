@@ -1,5 +1,6 @@
 package com.ruoyi.web.controller.fc;
 
+import com.ruoyi.common.annotation.Form;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.base.AjaxResult;
 import com.ruoyi.common.enums.BusinessType;
@@ -23,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -132,10 +134,11 @@ public class UserController extends BaseController
 	 * 抽奖
 	 * @return
 	 */
+	@Form
 	@PostMapping("web/prizeStart")
 	@ResponseBody
 	@Transactional(rollbackFor = Exception.class)
-	public AjaxResult webCount()
+	public AjaxResult webCount(HttpServletRequest request)
 	{
 		int  count  = iSysUserService.selectUserPrizeCountById(getUserId());
 		if (count<=0){
@@ -191,7 +194,7 @@ public class UserController extends BaseController
 			recordService.insertRecord(record);
 			 record.setDateTime(new Date());
 			 List<Record> list = recordService.selectRecordList(record);
-			 if(list.size()==3){
+			 if(list.size()==1){
 				 addPrize();
 				int prizeCount =  iSysUserService.selectUserPrizeCountById(getUserId());
 				return success("分享成功").put("prizeCount",prizeCount);

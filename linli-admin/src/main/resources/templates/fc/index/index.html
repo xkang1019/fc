@@ -238,12 +238,13 @@
     </div>
 </div>
     <input  id="times" name="times" value="-1" type="hidden" >
+    <input  id="token" name="token" th:value="${token}" type="hidden" >
 </body>
 <script>
     $(function(){
-        var index = layer.load(1, {
-            shade: [0.1,'#fff']//0.1透明度的白色背景
-        });
+         var index = layer.load(1, {
+             shade: [0.1,'#fff']//0.1透明度的白色背景
+         });
         var url = location.href.split('#').toString();//url不能写死
         $.ajax({
             type : "get",
@@ -300,8 +301,8 @@
         });
         //分享给好友
         wx.onMenuShareAppMessage({
-            title: '大华红樾山', // 分享标题
-            desc: '周年庆遇上双11，快来摇一摇！10万豪礼免费送', // 分享描述
+            title: '周年庆遇上双11，快来摇一摇！10万豪礼免费送', // 分享标题
+            desc: '大华红樾山抽最新iphone XS  冰箱等缤纷家电大奖', // 分享描述
             link: link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
             imgUrl: 'http://fc.haichenpeisong.com/images/16.jpg', // 自定义图标
             type: 'link', // 分享类型,music、video或link，不填默认为link
@@ -542,14 +543,15 @@
     }
 
     function selCount() {
+       var token = $("#token").val();
         var index = layer.load(1, {
             shade: [0.1,'#fff'] //0.1透明度的白色背景
         });
         $.ajax({
             url: '/fc/user/web/prizeStart',
             type: 'post',
-            headers: {"Content-Type":"application/json"},
             dataType: 'json',
+            data:{token:token},
             success: function (res) {
                 layer.close(index);
                 console.info(res);

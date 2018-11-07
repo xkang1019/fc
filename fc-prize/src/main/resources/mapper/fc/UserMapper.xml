@@ -40,7 +40,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select id from prize_user
         <where>
             <if test="uid != null "> and uid = #{uid}</if>
-            <if test="datetime != null "> and `datetime`  &lt;= date_format(#{datetime},'%y-%m-%d %h:%m:%s')  </if>
+            <if test="datetime != null "> and `datetime`  &lt;= date_format(#{datetime},'%Y-%m-%d %H:%i:%s')  </if>
             <if test="status != null "> and status = #{status}</if>
         </where>
     </select>

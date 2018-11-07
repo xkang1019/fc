@@ -1,6 +1,7 @@
 package com.ruoyi.web.controller.fc;
 
 import com.alibaba.fastjson.JSONObject;
+import com.ruoyi.common.annotation.Form;
 import com.ruoyi.common.base.AjaxResult;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.utils.DateUtil;
@@ -83,11 +84,15 @@ public class FcIndexConteroller extends BaseController {
         return prefix + "/jump";
     }
 
+
+    @Form
     @GetMapping("/index")
-    public String prize(String code, ModelMap modelMap) throws ServletException, IOException {
+    public String prize(String code, ModelMap modelMap,HttpServletRequest request) throws ServletException, IOException {
         getopenIdWeb(code);
-        //SysUser user = ShiroUtils.getUser();
         int  prizeCount =iSysUserService.selectUserPrizeCountById(getUserId());
+        String token = (String) request.getAttribute("token");
+        System.out.println("token:"+token);
+        modelMap.put("token",token);
         modelMap.put("prizeCount",prizeCount);
         return prefix + "/index";
     }
@@ -112,6 +117,7 @@ public class FcIndexConteroller extends BaseController {
         user.setUid(Math.toIntExact(getUserId()));
         user.setStatus(1);
         user.setDatetime(DateUtil.strToDateLong(nowdate));
+        System.out.println("DateUtil.strToDateLong(nowdate):"+DateUtil.strToDateLong(nowdate));
         String[] outPrizeArr =  userService.selectOutList(user);
         if (outPrizeArr.length!=0){
             userService.updateUserStatus(outPrizeArr);
