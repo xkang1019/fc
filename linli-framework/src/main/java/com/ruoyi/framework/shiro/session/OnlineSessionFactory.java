@@ -1,5 +1,6 @@
 package com.ruoyi.framework.shiro.session;
 
+import com.ruoyi.common.enums.OnlineStatus;
 import com.ruoyi.common.utils.IpUtils;
 import com.ruoyi.framework.util.ServletUtils;
 import eu.bitwalker.useragentutils.UserAgent;
