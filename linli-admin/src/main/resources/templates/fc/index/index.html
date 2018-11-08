@@ -657,7 +657,7 @@
 
 <script>
     var num = 0;
-    var height = window.innerHeight;
+
     var userInfo =[{info:'恭喜（kAang）获得三等奖九阳电饭煲一台',img:'/images/user1.jpg'},
        {info:'恭喜（用心的海龙）获得三等奖九阳电饭煲一台',img:'/images/user2.jpg'},
        {info:'恭喜（cream） 获得四等奖美的电水壶一台',img:'/images/user3.jpg'},
@@ -669,7 +669,7 @@
         {info:'恭喜（芯若莲）获得四等奖LED台灯一台',img:'/images/user9.jpg'}];
     showBarrager();
     function showBarrager() {
-        var heightRandom = Math.random()*100 + 150;
+        var heightRandom = Math.random()*50 + 100;
          var item= {
              img: userInfo[num].img, //图片
              info: userInfo[num].info, //文字
@@ -677,7 +677,7 @@
              close: false, //显示关闭按钮
              speed: 6, //延迟,单位秒,默认6
              color: '#fff', //颜色,默认白色
-             bottom: height - heightRandom,
+             bottom: heightRandom,
              old_ie_color: '#000000' //ie低版兼容色,不能与网页背景相同,默认黑色
          };
          num ++;
