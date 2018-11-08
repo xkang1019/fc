@@ -109,7 +109,7 @@
                 </configuration>
             </plugin>
         </plugins>
-        <finalName>linli-3.4</finalName>
+        <finalName>linli-3.5</finalName>
     </build>
 	
 </project>
