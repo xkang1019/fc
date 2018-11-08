@@ -99,7 +99,7 @@ public class AsyncFactory
             {
                 StringBuilder s = new StringBuilder();
                 s.append(LogUtils.getBlock(ip));
-                s.append(AddressUtils.getRealAddressByIP(ip));
+               // s.append(AddressUtils.getRealAddressByIP(ip));
                 s.append(LogUtils.getBlock(username));
                 s.append(LogUtils.getBlock(status));
                 s.append(LogUtils.getBlock(message));
