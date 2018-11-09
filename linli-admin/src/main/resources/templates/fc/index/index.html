@@ -253,9 +253,9 @@
 </body>
 <script>
     $(function(){
-          // var index = layer.load(1, {
-          //    shade: [0.1,'#fff']//0.1透明度的白色背景
-          // });
+          var index = layer.load(1, {
+             shade: [0.1,'#fff']//0.1透明度的白色背景
+          });
         var url = location.href.split('#').toString();//url不能写死
         $.ajax({
             type : "get",
@@ -656,41 +656,52 @@
 </script>
 
 <script>
+
+
+
+
     var num = 0;
 
-    var userInfo =[{info:'恭喜（kAang）获得三等奖九阳电饭煲一台',img:'/images/user1.jpg'},
-       {info:'恭喜（用心的海龙）获得三等奖九阳电饭煲一台',img:'/images/user2.jpg'},
-       {info:'恭喜（cream） 获得四等奖美的电水壶一台',img:'/images/user3.jpg'},
-       {info:'恭喜（茶老板）获得四等奖全自动雨伞一把',img:'/images/user4.jpg'},
-       {info:'恭喜（aloneYU）获得四等奖全自动雨伞一把',img:'/images/user5.jpg'},
-        {info:'恭喜（Zebra）获得四等奖全自动雨伞一把',img:'/images/user6.jpg'},
-        {info:'恭喜（威猛先生）获得四等奖美的电水壶一台',img:'/images/user7.jpg'},
-        {info:'恭喜（蓦然回首）获得四等奖美的电水壶一台',img:'/images/user8.jpg'},
-        {info:'恭喜（芯若莲）获得四等奖LED台灯一台',img:'/images/user9.jpg'}];
-    showBarrager();
-    function showBarrager() {
-        var heightRandom = Math.random()*50 + 100;
-         var item= {
-             img: userInfo[num].img, //图片
-             info: userInfo[num].info, //文字
-             href: '#', //链接
-             close: false, //显示关闭按钮
-             speed: 6, //延迟,单位秒,默认6
-             color: '#fff', //颜色,默认白色
-             bottom: heightRandom,
-             old_ie_color: '#000000' //ie低版兼容色,不能与网页背景相同,默认黑色
-         };
-         num ++;
-        if(num===9){
-            num =0;
+    var userInfo =[];
+    $.ajax({
+        url: '/fc/lunbo/web/list',
+        type: 'get',
+        dataType: 'json',
+        success: function (res) {
+            userInfo =  res.list;
+            showBarrager();
+            function showBarrager() {
+                var heightRandom = Math.random()*50 + 100;
+                var item= {
+                    img: userInfo[num].userimg, //图片
+                    info: userInfo[num].prizeinfo, //文字
+                    href: '#', //链接
+                    close: false, //显示关闭按钮
+                    speed: 6, //延迟,单位秒,默认6
+                    color: '#fff', //颜色,默认白色
+                    bottom: heightRandom,
+                    old_ie_color: '#000000' //ie低版兼容色,不能与网页背景相同,默认黑色
+                };
+                num ++;
+                if(num===userInfo.length){
+                    num =0;
+                }
+                $("body").barrager(item);
+            }
+
+
+            setInterval(function(){
+                showBarrager();
+            },4000);
+
+        },
+        error: function (err) {
+
         }
-         $("body").barrager(item);
-     }
+
+    })
 
 
-     setInterval(function(){
-         showBarrager();
-     },4000);
 
 </script>
 

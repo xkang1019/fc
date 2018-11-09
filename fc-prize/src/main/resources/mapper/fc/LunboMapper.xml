@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.fc.mapper.LunboMapper">
+    
+    <resultMap type="Lunbo" id="LunboResult">
+        <result property="id"    column="id"    />
+        <result property="userimg"    column="userimg"    />
+        <result property="prizeinfo"    column="prizeinfo"    />
+    </resultMap>
+	
+	<sql id="selectLunboVo">
+        select id, userimg, prizeinfo from lunbo
+    </sql>
+	
+    <select id="selectLunboList" parameterType="Lunbo" resultMap="LunboResult">
+        <include refid="selectLunboVo"/>
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+             <if test="userimg != null  and userimg != '' "> and userimg = #{userimg}</if>
+             <if test="prizeinfo != null  and prizeinfo != '' "> and prizeinfo = #{prizeinfo}</if>
+         </where>
+    </select>
+    
+    <select id="selectLunboById" parameterType="Integer" resultMap="LunboResult">
+        <include refid="selectLunboVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertLunbo" parameterType="Lunbo">
+        insert into lunbo
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  ">id,</if>
+			<if test="userimg != null  and userimg != ''  ">userimg,</if>
+			<if test="prizeinfo != null  and prizeinfo != ''  ">prizeinfo,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  ">#{id},</if>
+			<if test="userimg != null  and userimg != ''  ">#{userimg},</if>
+			<if test="prizeinfo != null  and prizeinfo != ''  ">#{prizeinfo},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateLunbo" parameterType="Lunbo">
+        update lunbo
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userimg != null  and userimg != ''  ">userimg = #{userimg},</if>
+            <if test="prizeinfo != null  and prizeinfo != ''  ">prizeinfo = #{prizeinfo},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteLunboById" parameterType="Integer">
+        delete from lunbo where id = #{id}
+    </delete>
+	
+    <delete id="deleteLunboByIds" parameterType="String">
+        delete from lunbo where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>
