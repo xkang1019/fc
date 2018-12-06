@@ -47,6 +47,7 @@
 		<module>wxcommon</module>
 		<module>mm-forest</module>
         <module>fc-prize</module>
+        <module>fc-kanja</module>
     </modules>
     <packaging>pom</packaging>
 

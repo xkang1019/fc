@@ -75,7 +75,7 @@ mybatis:
     # 搜索指定包别名
     typeAliasesPackage: com.ruoyi
     # 配置mapper的扫描，找到所有的mapper.xml映射文件
-    mapperLocations: classpath:mapper/system/*Mapper.xml,classpath:mapper/quartz/*Mapper.xml,classpath:mapper/generator/*Mapper.xml,classpath:mapper/forest/*Mapper.xml,classpath:mapper/fc/*Mapper.xml
+    mapperLocations: classpath:mapper/system/*Mapper.xml,classpath:mapper/quartz/*Mapper.xml,classpath:mapper/generator/*Mapper.xml,classpath:mapper/forest/*Mapper.xml,classpath:mapper/fc/*Mapper.xml,classpath:mapper/kanjia/*Mapper.xml
     # 加载全局的配置文件
     configLocation: classpath:mapper/mybatis-config.xml
 
@@ -131,10 +131,10 @@ xss:
 # 代码生成
 gen:
   # 作者
-  author: ruoyi
+  author: xkang
   # 默认生成包路径 module 需改成自己的模块名称 如 system monitor tool
-  packageName: com.ruoyi.fc
+  packageName: com.ruoyi.kanjia
   # 自动去除表前缀，默认是true
-  autoRemovePre: true
+  autoRemovePre: false
   # 表前缀(类名不会包含表前缀)
   tablePrefix: sys_

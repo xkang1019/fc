@@ -1,0 +1,802 @@
+<!DOCTYPE HTML>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>大华红樾山</title>
+
+    <meta charset="utf-8">
+    <meta name="apple-touch-fullscreen" content="YES">
+    <meta name="format-detection" content="telephone=yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta http-equiv="Expires" content="-1">
+    <meta http-equiv="pragram" content="no-cache">
+        <link th:href="@{/css/fc/barrager.css}" rel="stylesheet"/>
+    <haed>
+        <style>
+
+            a{
+                text-decoration:none;
+                color: #bda371
+            }
+            .button{
+                background-color: #71151b;
+                border-radius:4px;
+                width: 140px;
+                text-align: center;
+                height: 28px;
+                margin: 0;
+            }
+            img {
+                width: 100%;
+                background-size: contain;
+                vertical-align: top;
+
+            }
+            #popBox{
+                position: absolute;
+                display:none;
+                width:90%;
+                height:85%;
+                left:5%;
+                top:5%;
+                z-index:11;
+                background: #71151b;
+                border-radius:7px;
+            }
+                /*领取奖品弹出框*/
+            #prize{
+                position: absolute;
+                display:none;
+                width:90%;
+                height:300px;
+                left:5%;
+                top:30%;
+                z-index:11;
+            }
+            #imgPrize{
+                height: 100%;
+            }
+
+            #popLayer{
+                position: absolute;
+                display:none;
+                left:0;
+                top:0;
+                z-index:10;
+                background: #140809;
+                -moz-opacity: 0.8;
+                opacity:.80;
+                filter: alpha(opacity=80);/* 只支持IE6、7、8、9 */
+            }
+            .buttonPrize{
+                width: 42%;
+                height: 40px;
+                background-color: #d8232c;
+                text-align: center;
+                vertical-align:middle;
+                font-size: 25px;
+                padding-top: 8px;
+                border-radius: 6px;
+                color: #ffffff;
+
+            }
+
+            #imgbox{
+                height: 95%;width: 98%;
+                margin-top: 1%;
+                margin-left: 1%;
+            }
+
+            #imgbox img{
+                width:100%;			/* ... */
+                height:100%;		/* ... */
+                display:block;	/* ... */
+            }
+
+            #openCall{
+                background-color: #e0dcd8;
+                width: 40%;
+                height: 40px;
+                border-radius: 10px;
+                margin-top: 5px;
+            }
+            *{margin:0px;padding:0px;}
+            /* music */
+            @-webkit-keyframes reverseRotataZ{
+                0%{-webkit-transform: rotateZ(0deg);}
+                100%{-webkit-transform: rotateZ(-360deg);}
+            }
+            @-webkit-keyframes rotataZ{
+                0%{-webkit-transform: rotateZ(0deg);}
+                100%{-webkit-transform: rotateZ(360deg);}
+            }
+            #musicControl { position:fixed;left:20px;top:20px;margin-top:0;display:inline-block;z-index:99999999}
+            #musicControl a { display:inline-block;width: 25px; height: 25px;overflow:hidden;background:url('/images/mcbg.png') no-repeat;background-size:100%;}
+            #musicControl a audio{width:100%;height:56px;}
+            #musicControl a.stop { background-position:left bottom;}
+            #musicControl a.on { background-position:0px 1px;-webkit-animation: reverseRotataZ 1.2s linear infinite;}
+            #music_play_filter{width:100%;height:100%;overflow:hidden;position:fixed;top:0;left:0;z-index:99999998;}
+
+            #myButton{
+                position:absolute;
+                display:inline-block;
+                z-index:99999999;
+                top:20px;
+                left:75%;
+            }
+
+            #msgUser{
+                width: 50%;
+                position:fixed;
+                top:20px;
+                left:50%;
+                z-index:99999999;
+            }
+
+
+
+
+        </style>
+    </haed>
+
+
+    <script th:src="@{/js/fc/js/jquery-3.3.1/jquery-3.3.1.js}"></script>
+    <script th:src="@{/js/fc/js/offline.js}"></script><!--移动端版本兼容 -->
+    <script th:src="@{/js/fc/js/jquery.barrager.min.js}"></script><!--弹幕-->
+    <script th:src="@{/ajax/libs/layer/layer.min.js}"></script>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <script type="text/javascript">
+        var mengvalue = -1;
+        //if(mengvalue<0){mengvalue=0;}
+        var phoneWidth = parseInt(window.screen.width);
+        var phoneScale = phoneWidth / 640;
+
+        var ua = navigator.userAgent;
+        if (/Android (\d+\.\d+)/.test(ua)) {
+            var version = parseFloat(RegExp.$1);
+            // andriod 2.3
+            if (version > 2.3) {
+                document.write('<meta name="viewport" content="width=640, minimum-scale = ' + phoneScale + ', maximum-scale = ' + phoneScale + ', target-densitydpi=device-dpi">');
+                // andriod 2.3以上
+            } else {
+                document.write('<meta name="viewport" content="width=640, target-densitydpi=device-dpi">');
+            }
+            // 其他系统
+        } else {
+            document.write('<meta name="viewport" content="width=640, user-scalable=no, target-densitydpi=device-dpi">');
+        }
+    </script>
+
+    <meta name="viewport" content="width=640, user-scalable=no, target-densitydpi=device-dpi"><!--移动端版本兼容 end -->
+
+
+<body id="body" class="s-bg-ddd pc no-3d" style="-webkit-user-select: none;background-color: #0a0a0a;" onload="init()" >
+
+
+<div id="music">
+<span id="musicControl">
+ <a id="mc_play" class="on" onclick="play_music()" style="height: 50px;width: 50px">
+     <audio loop src="https://mc-1256137143.cos.ap-guangzhou.myqcloud.com/%E8%BD%AE%E6%92%AD%E5%9B%BE/fc/5417e3ba4295f.mp3" id="audio" autoplay preload="auto">该浏览器不支持audio属性</audio>
+ </a>
+ </span>
+</div>
+<div style="width: 100%" >
+
+    <div >
+        <div id="myButton" >
+          <a href="/fc/index/usrPrize" onclick="jQuery('.box').hide()" class="close" ><div class="button" >我的奖品</div></a>
+          <a href="javascript:;" onclick="popBox()" ><div class="button" style="margin-top: 5px">活动规则</div></a>
+        </div>
+    </div>
+
+    <div  style="width: 100%">
+        <img  src="https://mc-1256137143.cos.ap-guangzhou.myqcloud.com/%E8%BD%AE%E6%92%AD%E5%9B%BE/fc/16.jpg" />
+    <!--<img src="/images/20181027124419.png"/>-->
+        <!--onclick="selCount()"-->
+    <img onclick="signUp()" src="https://mc-1256137143.cos.ap-guangzhou.myqcloud.com/%E8%BD%AE%E6%92%AD%E5%9B%BE/fc/17.jpg"/>
+        <audio  th:src="@{/music/load.mp3}" id="shakingAudio"  >该浏览器不支持audio属性</audio>
+        <audio  th:src="@{/music/load.mp3}" id="shakingResult"  >该浏览器不支持audio属性</audio>
+        <div style="height: 70px;width: 100%;background-image: url('/images/123.jpg');background-size:100%">
+    <div style="width: 60%;height: 100%;font-size: 18px;color: #dddddd;text-align: center;margin-left: 20%">
+        <p>您还有<span th:text="${prizeCount}" id="prizeCount">0</span>次机会</p>
+        <p>抽最新IphoneXS，冰箱等缤纷家电大奖</p>
+    </div>
+
+        </div>
+        <div>
+           <div  th:if="${toUid} ne 0" style="width: 100px;height: 30px;background: #3dc7ab" onclick="kanjia()" >帮他减价</div>
+        </div>
+        <div  th:if="${isSingUp == true}" style="width: 100px;height: 30px;background: #3dc7ab" onclick="signUp()" >我的减价</div>
+        <div  th:if="${isSingUp == false}" style="width: 100px;height: 30px;background: #3dc7ab" onclick="signUp()" >我要报名</div>
+
+        <!--<img src="/images/20181027124532.jpg"/>-->
+    <img src="https://mc-1256137143.cos.ap-guangzhou.myqcloud.com/%E8%BD%AE%E6%92%AD%E5%9B%BE/fc/18.jpg"/>
+    <img src="https://mc-1256137143.cos.ap-guangzhou.myqcloud.com/%E8%BD%AE%E6%92%AD%E5%9B%BE/fc/19.jpg"/>
+    <img src="https://mc-1256137143.cos.ap-guangzhou.myqcloud.com/%E8%BD%AE%E6%92%AD%E5%9B%BE/fc/20.jpg"/>
+    <img src="https://mc-1256137143.cos.ap-guangzhou.myqcloud.com/%E8%BD%AE%E6%92%AD%E5%9B%BE/fc/21.jpg"/>
+    <img src="https://mc-1256137143.cos.ap-guangzhou.myqcloud.com/%E8%BD%AE%E6%92%AD%E5%9B%BE/fc/22.jpg"/>
+        <img src="https://mc-1256137143.cos.ap-guangzhou.myqcloud.com/%E8%BD%AE%E6%92%AD%E5%9B%BE/fc/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20181108235639.jpg"/>
+        <img src="https://mc-1256137143.cos.ap-guangzhou.myqcloud.com/%E8%BD%AE%E6%92%AD%E5%9B%BE/fc/24.jpg"/>
+        <img src="https://mc-1256137143.cos.ap-guangzhou.myqcloud.com/%E8%BD%AE%E6%92%AD%E5%9B%BE/fc/26.jpg"/>
+    </div>
+    <div style="width: 60%;height: 70px;font-size: 18px;color: #ffffff;text-align: center;margin-left: 20%;margin-top: 20px">
+
+    <span>咨询电话：0797-2928888</span>
+        </br>
+        <a href="tel:0797-2928888"><button id="openCall">立即拨打</button></a>
+
+    </div>
+
+    <br>
+</div>
+
+<div id="popLayer"  onclick="closeBox(),closePrize(),closeShowMsgUser()">
+
+</div>
+
+<div id="msgUser" style="display: none">
+    <img src="https://mc-1256137143.cos.ap-guangzhou.myqcloud.com/%E8%BD%AE%E6%92%AD%E5%9B%BE/fc/guide1.png"  /></div>
+</div>
+
+<div id="popBox" >
+    <div id="imgbox" >
+        <img src="https://mc-1256137143.cos.ap-guangzhou.myqcloud.com/%E8%BD%AE%E6%92%AD%E5%9B%BE/fc/15.jpg"  /></div>
+</div>
+
+<div id="prize" >
+    <div id="imgPrize" >
+
+
+    </div>
+    <div style="width: 100%">
+        <div class="buttonPrize" id="receive"  style="float: left" onclick="jumpUrl('/fc/index/usrPrize')" >领取奖品</div>
+        <div class="buttonPrize" id="again" onclick="closePrize()" style="float: right">再来一次</div>
+    </div>
+</div>
+    <input  id="times" name="times" value="-1" type="hidden" >
+    <input  id="token" name="token" th:value="${token}" type="hidden" >
+   <input  id="isSingUp" name="isSingUp" th:value="${isSingUp}" >
+    <input  id="uid" name="uid" th:value="${uid}"  >
+  <input  id="toUid" name="toUid" th:value="${toUid}"  >
+
+
+
+</body>
+<script>
+    $(function(){
+          var index = layer.load(1, {
+             shade: [0.1,'#fff']//0.1透明度的白色背景
+          });
+        var url = location.href.split('#').toString();//url不能写死
+        $.ajax({
+            type : "get",
+            url : "/weixinpay/wechatParam",
+            dataType : "json",
+            async : false,
+            data:{url:url},
+            success : function(data) {
+                console.info('data',data);
+                wx.config({
+                    debug: false,////生产环境需要关闭debug模式
+                    appId: data.wechatParam.appid,//appId通过微信服务号后台查看
+                    timestamp: data.wechatParam.timestamp,//生成签名的时间戳
+                    nonceStr: data.wechatParam.nonceStr,//生成签名的随机字符串
+                    signature: data.wechatParam.signature,//签名
+                    jsApiList: [//需要调用的JS接口列表
+                        'checkJsApi',//判断当前客户端版本是否支持指定JS接口
+                        'onMenuShareTimeline',//分享给好友
+                        'onMenuShareAppMessage'//分享到朋友圈
+                    ]
+                });
+            },
+            error: function(xhr, status, error) {
+                //alert(status);
+                //alert(xhr.responseText);
+            }
+        })
+    });
+
+
+    wx.ready(function () {
+        layer.close(layer.index);
+        var link = 'http://fc.haichenpeisong.com/kanjia/index/jump';
+        var isSingUp = $("#isSingUp").val();
+        var uid = $("#uid").val();
+        if(isSingUp){
+            link = link+"?uid="+uid;
+        }else {
+            link = link+"?uid="+0;
+        }
+        var protocol = window.location.protocol;
+        var host = window.location.host;
+        //分享朋友圈
+        wx.onMenuShareTimeline({
+            title: '你能帮我砍砍吗？',
+            link: link,
+            imgUrl: 'http://fc.haichenpeisong.com/images/16.jpg',// 自定义图标
+            trigger: function (res) {
+                // 不要尝试在trigger中使用ajax异步请求修改本次分享的内容，因为客户端分享操作是一个同步操作，这时候使用ajax的回包会还没有返回.
+                //alert('click shared');
+            },
+            success: function (res) {
+                addPrize(2)
+            },
+            cancel: function (res) {
+                //alert('shared cancle');
+            },
+            fail: function (res) {
+                //alert(JSON.stringify(res));
+            }
+        });
+        //分享给好友
+        wx.onMenuShareAppMessage({
+            title: '你能帮我砍砍吗？', // 分享标题
+            desc: 'kankanka', // 分享描述
+            link: link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            imgUrl: 'http://fc.haichenpeisong.com/images/16.jpg', // 自定义图标
+            type: 'link', // 分享类型,music、video或link，不填默认为link
+            dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+            success: function () {
+                // 用户确认分享后执行的回调函数
+                addPrize(1)
+            },
+            cancel: function () {
+                // 用户取消分享后执行的回调函数
+            }
+        });
+        wx.error(function (res) {
+            alert(res.errMsg);
+        });
+
+       /* var audio1 = document.getElementById('shakingAudio');
+        var audio2 = document.getElementById('shakingResult');
+        document.addEventListener("WeixinJSBridgeReady", function weixinjsbridgeready() {
+            audio1.load();
+            audio2.load();
+        }, false);*/
+
+    });
+
+
+
+
+   /* var audio1 = $("#shakingAudio");
+    var audio2 = $("#shakingResult");*/
+    // var audioAutoPlay = function (el) {
+    //     var audio_el = document.getElementById(el);
+    //     audio_el.play();
+    //     document.addEventListener("WeixinJSBridgeReady", function () {
+    //         audio_el.play();
+    //     }, false);
+    // };
+
+
+
+
+
+</script>
+
+<script type="text/javascript">
+    function popBox(){
+        var popBox = document.getElementById('popBox');
+        var popLayer = document.getElementById('popLayer');
+
+
+        popLayer.style.width = document.body.scrollWidth + "px";
+        popLayer.style.height = document.body.scrollHeight + "px";
+
+        popLayer.style.display = "block";
+        popBox.style.display = "block";
+
+    }
+
+    function closeBox(){
+        var popBox = document.getElementById('popBox');
+        var popLayer = document.getElementById('popLayer');
+        popLayer.style.display = "none";
+        popBox.style.display = "none";
+
+    }
+
+    function popPrize(){
+
+
+
+        var prize = document.getElementById('prize');
+        var popLayer = document.getElementById('popLayer');
+
+
+        popLayer.style.width = document.body.scrollWidth + "px";
+        popLayer.style.height = document.body.scrollHeight + "px";
+
+        popLayer.style.display = "block";
+        prize.style.display = "block";
+    }
+
+    function closePrize(){
+        var prize = document.getElementById('prize');
+        var popLayer = document.getElementById('popLayer');
+        popLayer.style.display = "none";
+        prize.style.display = "none";
+    }
+
+    function showMsgUser() {
+        var msgUser = document.getElementById('msgUser');
+        var popLayer = document.getElementById('popLayer');
+        popLayer.style.width = document.body.scrollWidth + "px";
+        popLayer.style.height = document.body.scrollHeight + "px";
+        msgUser.style.display = "block";
+        popLayer.style.display = "block";
+    }
+    function closeShowMsgUser() {
+        var msgUser = document.getElementById('msgUser');
+        var popLayer = document.getElementById('popLayer');
+        msgUser.style.display = "none";
+        popLayer.style.display = "none";
+    }
+
+    function getPar(par){
+        //获取当前URL
+        var local_url = document.location.href;
+        //获取要取得的get参数位置
+        var get = local_url.indexOf(par +"=");
+        if(get == -1){
+            return false;
+        }
+        //截取字符串
+        var get_par = local_url.slice(par.length + get + 1);
+        //判断截取后的字符串是否还有其他get参数
+        var nextPar = get_par.indexOf("&");
+        if(nextPar != -1){
+            get_par = get_par.slice(0, nextPar);
+        }
+        return get_par;
+    }
+
+</script>
+
+
+
+<script>
+    //var src = "music/5417e3ba4295f.mp3";
+    // 初始化Aduio
+    var audio = document.getElementById('audio');
+    var shakingAudio = document.getElementById('shakingAudio');
+    var shakingResult = document.getElementById('shakingResult');
+    // audio.src = src;
+
+    function play_music() {
+        if(audio.paused){
+            audio.play();
+            $('#mc_play').attr('class','on');
+        }else{
+            audio.pause();
+            $('#mc_play').attr('class','stop');
+        }
+        // 音频文件
+    }
+
+    var a = 0;
+    var b = 0;
+    var c = 0;
+    $('#body').on('touchstart',function(){
+        if (a==0){
+           var pormise = audio.play();
+            pormise.then(function () {
+            }).catch(function (e) {
+                console.info('正在加载...')
+            })
+            if (!audio.paused){
+
+
+                a++
+            }
+        }
+        if (b==0){
+            var pormise = shakingAudio.play();
+            pormise.then(function () {
+            }).catch(function (e) {
+                console.info('正在加载...')
+            });
+            if (!shakingAudio.paused){
+                shakingAudio.setAttribute('src', 'http://fc.haichenpeisong.com/music/5018.mp3');
+                shakingAudio.load();
+                b++
+            }
+
+        }
+        if (c==0){
+
+            var pormise = shakingResult.play();
+            pormise.then(function () {
+            }).catch(function (e) {
+                console.info('正在加载...')
+            });
+            if (!shakingResult.paused){
+                shakingResult.setAttribute('src', 'http://fc.haichenpeisong.com/music/5012.mp3');
+                shakingResult.load();
+                c++
+            }
+        }
+
+    });
+
+
+        shakingAudio.setAttribute('src', 'http://fc.haichenpeisong.com/music/5018.mp3');
+        shakingAudio.load();
+        shakingResult.setAttribute('src', 'http://fc.haichenpeisong.com/music/5012.mp3');
+        shakingResult.load();
+
+</script>
+
+<script>
+    var times = -1; // 记录摇动次数
+    var SHAKE_THRESHOLD = 3000;
+    var last_update = 0;
+    var x = y = z = last_x = last_y = last_z = 0;
+   /* function init() {
+        if (window.DeviceMotionEvent) {
+            window.addEventListener('devicemotion', deviceMotionHandler, false);
+        } else {
+            alert('not support mobile event');
+        }
+    }
+    function deviceMotionHandler(eventData) {
+        var acceleration = eventData.accelerationIncludingGravity;
+        var curTime = new Date().getTime();
+        if ((curTime - last_update) > 100) {
+            var diffTime = curTime - last_update;
+            last_update = curTime;
+            x = acceleration.x;
+            y = acceleration.y;
+            z = acceleration.z;
+            var speed = Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * 40000;
+
+            if (speed > SHAKE_THRESHOLD) {
+                times++;
+                if(times==0){
+                    if (navigator.vibrate) {
+                        navigator.vibrate(500);
+                    } else if (navigator.webkitVibrate) {
+                        navigator.webkitVibrate(500);
+                    }
+                    shakingAudioFun();
+                    selCount();
+                }
+
+            }
+            last_x = x;
+            last_y = y;
+            last_z = z;
+        }
+    }
+*/
+    function selCount() {
+       var token = $("#token").val();
+        var index = layer.load(1, {
+            shade: [0.1,'#fff'] //0.1透明度的白色背景
+        });
+        $.ajax({
+            url: '/fc/user/web/prizeStart',
+            type: 'post',
+            dataType: 'json',
+            data:{token:token},
+            success: function (res) {
+                layer.close(index);
+                console.info(res);
+                if (res.code!==0){
+                    layer.alert('今日已无抽奖次数,请分享再试');
+                    showMsgUser();
+                    times=-1;
+
+                }else {
+                    shakingResultFun();
+                    $("#imgPrizeInfo").attr("src",res.prize.pimg);
+                    popPrize();
+                    times=-1;
+                    //计算次数
+                    var count = $("#prizeCount").text();
+                    count = count - 1;
+                    $("#prizeCount").html(count)
+                    var count2 = $("#prizeCount").text();
+                    if(count2<0){
+                        $("#prizeCount").html(0)
+
+                    }
+                }
+
+            },
+            error: function (err) {
+                layer.close(index);
+            }
+
+        })
+    }
+
+</script>
+
+
+
+<script>
+
+
+
+    function addPrize(typeparm) {
+        $.ajax({
+            url: '/fc/user/web/addPrize',
+            type: 'post',
+            dataType: 'json',
+            data: {type:typeparm},
+            success: function (res) {
+                console.info(res);
+                if (res.code===0){
+                    if(res.prizeCount>=1){
+                        times=-1;
+                    }
+                    $("#prizeCount").html(res.prizeCount);
+
+                    console.log(res)
+                }else{
+                    console.log(res)
+
+                }
+                layer.alert('分享成功');
+            },
+            error: function (err) {
+
+            }
+
+        })
+    }
+    function jumpUrl(url) {
+         location.href = url
+    }
+
+
+    function shakingAudioFun() {
+
+        var audio = document.getElementById('shakingAudio');
+          audio.play();
+
+       /* $("#shakingAudio").trigger('play');*/
+
+       // audioAutoPlay('shakingAudio')
+    }
+
+    function shakingResultFun() {
+
+        var audio = document.getElementById('shakingResult');
+        audio.play();
+       /* $("#shakingResult").trigger('play');*/
+       // audioAutoPlay('shakingResult')
+
+    }
+</script>
+
+<script>
+
+
+
+
+    var num = 0;
+
+    var userInfo =[];
+    $.ajax({
+        url: '/fc/lunbo/web/list',
+        type: 'get',
+        dataType: 'json',
+        success: function (res) {
+            userInfo =  res.list;
+            showBarrager();
+            function showBarrager() {
+                var heightRandom = Math.random()*50 + 100;
+                var item= {
+                    img: userInfo[num].userimg, //图片
+                    info: userInfo[num].prizeinfo, //文字
+                    href: '#', //链接
+                    close: false, //显示关闭按钮
+                    speed: 6, //延迟,单位秒,默认6
+                    color: '#fff', //颜色,默认白色
+                    bottom: heightRandom,
+                    old_ie_color: '#000000' //ie低版兼容色,不能与网页背景相同,默认黑色
+                };
+                num ++;
+                if(num===userInfo.length){
+                    num =0;
+                }
+                $("body").barrager(item);
+            }
+
+
+            setInterval(function(){
+                showBarrager();
+            },4000);
+
+        },
+        error: function (err) {
+
+        }
+
+    })
+
+
+    function signUp(pid,id) {
+        var token = $("#token").val();
+        layer.open({
+            content: '姓名：<br><br>' +
+            '<input id="uname" class="form-control" style="width: 70%;height: 30px "  type="text">' +
+            '电话：<br><br>' +
+            '<input id="phone" class="form-control" style="width: 70%;height: 30px "  type="text">'
+            ,btn: ['领取', '取消']
+            ,yes: function(index){
+                  var uname =  $("#uname").val();
+                var phone =  $("#phone").val();
+                    $.ajax({
+                        url: '/kanjia/kanjiaUser/web/add',
+                        type: 'post',
+                        dataType: 'json',
+                        data: {uname:uname,phone:phone,token:token},
+                        success: function (res) {
+                            console.info(res);
+                            if (res.code===0){
+                                layer.open({
+                                    content: '报名成功'
+                                    ,skin: 'msg'
+                                    ,time: 2 //2秒后自动关闭
+                                });
+                                setTimeout("location.reload()",2000);
+                            }else{
+                                layer.open({
+                                    content: '报名失败'
+                                    ,skin: 'msg'
+                                    ,time: 2 //2秒后自动关闭
+                                });
+
+                            }
+                        },
+                        error: function (err) {
+
+                        }
+                    });
+
+                layer.close(index);
+            }
+        });
+    }
+
+    function kanjia() {
+        var token = $("#token").val();
+        var toUid = $("#toUid").val();
+        $.ajax({
+            url: '/kanjia/kanjiaUserHelpinfo/web/add',
+            type: 'post',
+            dataType: 'json',
+            data: {toUid:toUid,token:token},
+            success: function (res) {
+                console.info(res);
+                if (res.code===0){
+                    layer.open({
+                         content: '砍价'+res.money+'元'
+                        ,skin: 'msg'
+                        ,time: 2 //2秒后自动关闭
+                    });
+                    setTimeout("location.reload()",2000);
+                }else{
+                    layer.open({
+                         content: '已砍价'
+                        ,skin: 'msg'
+                        ,time: 2 //2秒后自动关闭
+                    });
+
+                }
+            },
+            error: function (err) {
+
+            }
+        });
+    }
+</script>
+
+
+</html>

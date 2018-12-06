@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.kanjia.mapper.KanjiaUserMapper">
+    
+    <resultMap type="KanjiaUser" id="KanjiaUserResult">
+        <result property="id"    column="id"    />
+        <result property="uid"    column="uid"    />
+        <result property="presentPrice"    column="presentPrice"    />
+        <result property="originalPrice"    column="originalPrice"    />
+        <result property="floorPrice"    column="floorPrice"    />
+        <result property="uname"    column="uname"    />
+        <result property="uimg"    column="uimg"    />
+        <result property="nickname"    column="nickname"    />
+        <result property="phone"    column="phone"    />
+
+
+    </resultMap>
+	
+	<sql id="selectKanjiaUserVo">
+        select id, uid, presentPrice, originalPrice, floorPrice, uname, uimg, phone, nickname from kanjia_user
+    </sql>
+	
+    <select id="selectKanjiaUserList" parameterType="KanjiaUser" resultMap="KanjiaUserResult">
+        <include refid="selectKanjiaUserVo"/>
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+             <if test="uid != null "> and uid = #{uid}</if>
+             <if test="presentPrice != null "> and presentPrice = #{presentPrice}</if>
+             <if test="originalPrice != null "> and originalPrice = #{originalPrice}</if>
+             <if test="floorPrice != null "> and floorPrice = #{floorPrice}</if>
+             <if test="uname != null  and uname != '' "> and uname = #{uname}</if>
+             <if test="uimg != null  and uimg != '' "> and uimg = #{uimg}</if>
+            <if test="phone != null  and phone != '' "> and phone = #{phone}</if>
+            <if test="nickname != null  and nickname != '' "> and nickname = #{nickname}</if>
+         </where>
+    </select>
+    
+    <select id="selectKanjiaUserById" parameterType="Integer" resultMap="KanjiaUserResult">
+        <include refid="selectKanjiaUserVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertKanjiaUser" parameterType="KanjiaUser">
+        insert into kanjia_user
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  ">id,</if>
+			<if test="uid != null  ">uid,</if>
+			<if test="presentPrice != null  ">presentPrice,</if>
+			<if test="originalPrice != null  ">originalPrice,</if>
+			<if test="floorPrice != null  ">floorPrice,</if>
+			<if test="uname != null  and uname != ''  ">uname,</if>
+			<if test="uimg != null  and uimg != ''  ">uimg,</if>
+            <if test="nickname != null  and nickname != ''  ">nickname,</if>
+            <if test="phone != null  and phone != ''  ">phone,</if>
+
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  ">#{id},</if>
+			<if test="uid != null  ">#{uid},</if>
+			<if test="presentPrice != null  ">#{presentPrice},</if>
+			<if test="originalPrice != null  ">#{originalPrice},</if>
+			<if test="floorPrice != null  ">#{floorPrice},</if>
+			<if test="uname != null  and uname != ''  ">#{uname},</if>
+			<if test="uimg != null  and uimg != ''  ">#{uimg},</if>
+            <if test="nickname != null  and nickname != ''  ">#{nickname},</if>
+            <if test="phone != null  and phone != ''  ">#{phone},</if>
+
+         </trim>
+    </insert>
+	 
+    <update id="updateKanjiaUser" parameterType="KanjiaUser">
+        update kanjia_user
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="uid != null  ">uid = #{uid},</if>
+            <if test="presentPrice != null  ">presentPrice = #{presentPrice},</if>
+            <if test="originalPrice != null  ">originalPrice = #{originalPrice},</if>
+            <if test="floorPrice != null  ">floorPrice = #{floorPrice},</if>
+            <if test="uname != null  and uname != ''  ">uname = #{uname},</if>
+            <if test="uimg != null  and uimg != ''  ">uimg = #{uimg},</if>
+            <if test="nickname != null  and nickname != ''  ">uimg = #{nickname},</if>
+            <if test="phone != null  and phone != ''  ">uimg = #{phone},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteKanjiaUserById" parameterType="Integer">
+        delete from kanjia_user where id = #{id}
+    </delete>
+	
+    <delete id="deleteKanjiaUserByIds" parameterType="String">
+        delete from kanjia_user where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

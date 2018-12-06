@@ -314,6 +314,8 @@ public class ShiroConfig
         filterChainDefinitionMap.put("/system/sysCards/**","anon");
         /*fcfcfcfc*/
         filterChainDefinitionMap.put("/fc/index/**","anon");
+        filterChainDefinitionMap.put("/kanjia/index/**","anon");
+        filterChainDefinitionMap.put("/kanjia/kanjiaUserHelpinfo/web/add","anon");
         filterChainDefinitionMap.put("/images/**","anon");
         filterChainDefinitionMap.put("/music/**","anon");
 

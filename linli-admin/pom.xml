@@ -73,6 +73,11 @@
             <artifactId>prize</artifactId>
             <version>3.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.linli</groupId>
+            <artifactId>fc-kanja</artifactId>
+            <version>3.0</version>
+        </dependency>
 
     </dependencies>
 
@@ -109,7 +114,7 @@
                 </configuration>
             </plugin>
         </plugins>
-        <finalName>linli-3.5</finalName>
+        <finalName>linli-3.6</finalName>
     </build>
 	
 </project>

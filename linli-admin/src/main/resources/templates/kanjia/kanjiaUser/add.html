@@ -1,0 +1,64 @@
+<!DOCTYPE HTML>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-kanjiaUser-add">
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">uid：</label>
+				<div class="col-sm-8">
+					<input id="uid" name="uid" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">现价：</label>
+				<div class="col-sm-8">
+					<input id="presentPrice" name="presentPrice" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">原价：</label>
+				<div class="col-sm-8">
+					<input id="originalPrice" name="originalPrice" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">底价：</label>
+				<div class="col-sm-8">
+					<input id="floorPrice" name="floorPrice" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">微信名字：</label>
+				<div class="col-sm-8">
+					<input id="uname" name="uname" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">微信头像：</label>
+				<div class="col-sm-8">
+					<input id="uimg" name="uimg" class="form-control" type="text">
+				</div>
+			</div>
+		</form>
+	</div>
+    <div th:include="include::footer"></div>
+    <script type="text/javascript">
+		var prefix = ctx + "kanjia/kanjiaUser"
+		$("#form-kanjiaUser-add").validate({
+			rules:{
+				xxxx:{
+					required:true,
+				},
+			}
+		});
+		
+		function submitHandler() {
+	        if ($.validate.form()) {
+	            $.operate.save(prefix + "/add", $('#form-kanjiaUser-add').serialize());
+	        }
+	    }
+	</script>
+</body>
+</html>
