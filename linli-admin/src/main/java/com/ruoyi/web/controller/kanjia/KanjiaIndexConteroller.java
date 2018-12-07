@@ -86,6 +86,18 @@ public class KanjiaIndexConteroller extends BaseController {
     }
 
 
+    @GetMapping("/test")
+    public String test(ModelMap modelMap)
+    {
+        modelMap.put("isSingUp",false);
+        modelMap.put("uid",1);
+        modelMap.put("isSingUp",true);
+        modelMap.put("toUid",0);
+        modelMap.put("token",2);
+        modelMap.put("prizeCount",3);
+        return prefix + "/index";
+    }
+
     @Form
     @GetMapping("/index")
     public String prize(String code,int state, ModelMap modelMap,HttpServletRequest request,HttpSession session) throws ServletException, IOException {

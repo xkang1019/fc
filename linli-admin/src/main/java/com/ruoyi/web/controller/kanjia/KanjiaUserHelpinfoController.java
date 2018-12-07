@@ -7,6 +7,7 @@ import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.framework.web.page.TableDataInfo;
 import com.ruoyi.kanjia.domain.KanjiaUserHelpinfo;
 import com.ruoyi.kanjia.service.IKanjiaUserHelpinfoService;
+import com.ruoyi.system.service.ISysUserService;
 import com.ruoyi.web.core.base.BaseController;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,11 @@ public class KanjiaUserHelpinfoController extends BaseController
 	
 	@Autowired
 	private IKanjiaUserHelpinfoService kanjiaUserHelpinfoService;
-	
+
+	@Autowired
+	private ISysUserService iSysUserService;
+
+
 	@RequiresPermissions("kanjia:kanjiaUserHelpinfo:view")
 	@GetMapping()
 	public String kanjiaUserHelpinfo()
@@ -114,6 +119,11 @@ public class KanjiaUserHelpinfoController extends BaseController
 	@ResponseBody
 	public AjaxResult webAddSave(KanjiaUserHelpinfo kanjiaUserHelpinfo, HttpServletRequest request)
 	{
+
+	    int  prize	=iSysUserService.selectUserPrizeCountById(getUserId());
+		if (prize==0){
+			return error("已帮砍过价了");
+		}
 		kanjiaUserHelpinfo.setUid(Math.toIntExact(getUserId()));
 		kanjiaUserHelpinfo.setMoney(new BigDecimal(2));
 		return toAjax(kanjiaUserHelpinfoService.insertKanjiaUserHelpinfo(kanjiaUserHelpinfo)).put("money",new BigDecimal(2));

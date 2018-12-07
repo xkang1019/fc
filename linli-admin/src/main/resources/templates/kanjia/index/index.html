@@ -11,22 +11,18 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta http-equiv="Expires" content="-1">
     <meta http-equiv="pragram" content="no-cache">
-        <link th:href="@{/css/fc/barrager.css}" rel="stylesheet"/>
+    <link th:href="@{/css/fc/barrager.css}" rel="stylesheet"/>
+    <link th:href="@{/css/button.css}" rel="stylesheet"/>
     <haed>
         <style>
-
+            .button{
+                width: 30%;
+            }
             a{
                 text-decoration:none;
                 color: #bda371
             }
-            .button{
-                background-color: #71151b;
-                border-radius:4px;
-                width: 140px;
-                text-align: center;
-                height: 28px;
-                margin: 0;
-            }
+
             img {
                 width: 100%;
                 background-size: contain;
@@ -134,9 +130,67 @@
                 z-index:99999999;
             }
 
+            .box{
+                width: 90%;
+                margin-left: 5%;
+                background: white;
+                border-radius: 30px;
+
+            }
 
 
+            .data-show-box{line-height:30px;}
+            .date-tiem-span,.date-s-span{display: inline-block;font-size:18px; width:36px; height:30px;line-height:30px; text-align: center; color:#fff; border-radius:5px;}
+            .date-tiem-span{ background:#333;}
+            .date-s-span{ background:#f00;}
+            .date-select-a{margin-right:5px;}
 
+            #title1{
+                float: left;
+                width:30%;
+                height:30px;
+            }
+            #dateShow1{
+                float: right;
+            }
+            #box1{
+                width:70% ;
+                margin-left: 15%;
+                padding-top: 10px;
+                font-size: 22px;
+            }
+
+            #box2{
+                height: 200px;
+                margin-top: 30px;
+            }
+            #box2_1{
+                margin-left: 5%;
+                float: left;
+                height: 100%;
+                width: 30%;
+            }
+            #box2_2{
+                height: 100%;
+                width: 60%;
+                float: left;
+            }
+            .box2_2_info{
+                height: 20%;
+                font-size: 23px;
+                margin-left: 10%;
+            }
+            .box2_2_info_margin{
+                margin-left: 30px;
+            }
+
+            li{
+                width: 100%;
+                height: 70px;
+                list-style-type:none;
+                margin-top: 5px;
+                margin-bottom: 5px;
+            }
         </style>
     </haed>
 
@@ -145,6 +199,7 @@
     <script th:src="@{/js/fc/js/offline.js}"></script><!--移动端版本兼容 -->
     <script th:src="@{/js/fc/js/jquery.barrager.min.js}"></script><!--弹幕-->
     <script th:src="@{/ajax/libs/layer/layer.min.js}"></script>
+    <script th:src="@{/js/leftTime.min.js}"></script>
     <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
     <script type="text/javascript">
         var mengvalue = -1;
@@ -171,7 +226,7 @@
     <meta name="viewport" content="width=640, user-scalable=no, target-densitydpi=device-dpi"><!--移动端版本兼容 end -->
 
 
-<body id="body" class="s-bg-ddd pc no-3d" style="-webkit-user-select: none;background-color: #0a0a0a;" onload="init()" >
+<body id="body" class="s-bg-ddd pc no-3d" style="-webkit-user-select: none;" onload="init()" >
 
 
 <div id="music">
@@ -181,51 +236,212 @@
  </a>
  </span>
 </div>
-<div style="width: 100%" >
+<div style="background-image: url('/images/369.jpg');position: fixed;height: 100%;width: 100%;z-index: 1"></div>
+<div style="position: fixed;height: 50px;width: 100px;z-index: 1;top: 30%;left: 300px">
+    <img src="/images/898.png">
+</div>
+<div style="position: fixed;height: 50px;width: 100px;z-index: 1;top: 60%;left: 500px">
+    <img src="/images/898.png">
+</div>
+<div style="position: fixed;height: 50px;width: 100px;z-index: 1;top: 90%;left: 100px">
+    <img src="/images/898.png">
+</div>
+<div style="width: 100%;position:absolute;z-index:2" >
 
-    <div >
-        <div id="myButton" >
+    <!--<div>
+        <div id="myButton">
           <a href="/fc/index/usrPrize" onclick="jQuery('.box').hide()" class="close" ><div class="button" >我的奖品</div></a>
           <a href="javascript:;" onclick="popBox()" ><div class="button" style="margin-top: 5px">活动规则</div></a>
         </div>
-    </div>
+    </div>-->
 
-    <div  style="width: 100%">
-        <img  src="https://mc-1256137143.cos.ap-guangzhou.myqcloud.com/%E8%BD%AE%E6%92%AD%E5%9B%BE/fc/16.jpg" />
+
+        <img  src="/images/030.png" />
     <!--<img src="/images/20181027124419.png"/>-->
         <!--onclick="selCount()"-->
-    <img onclick="signUp()" src="https://mc-1256137143.cos.ap-guangzhou.myqcloud.com/%E8%BD%AE%E6%92%AD%E5%9B%BE/fc/17.jpg"/>
+
         <audio  th:src="@{/music/load.mp3}" id="shakingAudio"  >该浏览器不支持audio属性</audio>
         <audio  th:src="@{/music/load.mp3}" id="shakingResult"  >该浏览器不支持audio属性</audio>
-        <div style="height: 70px;width: 100%;background-image: url('/images/123.jpg');background-size:100%">
-    <div style="width: 60%;height: 100%;font-size: 18px;color: #dddddd;text-align: center;margin-left: 20%">
-        <p>您还有<span th:text="${prizeCount}" id="prizeCount">0</span>次机会</p>
-        <p>抽最新IphoneXS，冰箱等缤纷家电大奖</p>
+
+
+
+
+    <div class="box" style="margin-top: 50px;  height: 50px;">
+        <div id="box1">
+        <div id="title1"><span>活动倒计时:</span></div>
+        <div class="data-show-box" id="dateShow1">
+            <span class="date-tiem-span d">00</span>天
+            <span class="date-tiem-span h">00</span>时
+            <span class="date-tiem-span m">00</span>分
+            <span class="date-s-span s">00</span>秒
+        </div>
+        </div>
+
     </div>
 
+    <div class="box" style="height: 200px" >
+        <div id="box2">
+            <div id="box2_1">
+                <img src="/images/icon-product.png" width="150px" height="170px" style="margin-top: 15px">
+            </div>
+            <div id="box2_2">
+                <div class="box2_2_info" style="margin-top: 30px">大华 · 红樾山之夜门票</div>
+                <div class="box2_2_info">
+                    <span>原价：260</span><span class="box2_2_info_margin">低价：189</span>
+                </div>
+                <div class="box2_2_info">
+                    <span>数量：260</span><span class="box2_2_info_margin">剩余：189</span>
+                </div>
+            </div>
         </div>
-        <div>
-           <div  th:if="${toUid} ne 0" style="width: 100px;height: 30px;background: #3dc7ab" onclick="kanjia()" >帮他减价</div>
-        </div>
-        <div  th:if="${isSingUp == true}" style="width: 100px;height: 30px;background: #3dc7ab" onclick="signUp()" >我的减价</div>
-        <div  th:if="${isSingUp == false}" style="width: 100px;height: 30px;background: #3dc7ab" onclick="signUp()" >我要报名</div>
 
-        <!--<img src="/images/20181027124532.jpg"/>-->
-    <img src="https://mc-1256137143.cos.ap-guangzhou.myqcloud.com/%E8%BD%AE%E6%92%AD%E5%9B%BE/fc/18.jpg"/>
-    <img src="https://mc-1256137143.cos.ap-guangzhou.myqcloud.com/%E8%BD%AE%E6%92%AD%E5%9B%BE/fc/19.jpg"/>
-    <img src="https://mc-1256137143.cos.ap-guangzhou.myqcloud.com/%E8%BD%AE%E6%92%AD%E5%9B%BE/fc/20.jpg"/>
-    <img src="https://mc-1256137143.cos.ap-guangzhou.myqcloud.com/%E8%BD%AE%E6%92%AD%E5%9B%BE/fc/21.jpg"/>
-    <img src="https://mc-1256137143.cos.ap-guangzhou.myqcloud.com/%E8%BD%AE%E6%92%AD%E5%9B%BE/fc/22.jpg"/>
-        <img src="https://mc-1256137143.cos.ap-guangzhou.myqcloud.com/%E8%BD%AE%E6%92%AD%E5%9B%BE/fc/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20181108235639.jpg"/>
-        <img src="https://mc-1256137143.cos.ap-guangzhou.myqcloud.com/%E8%BD%AE%E6%92%AD%E5%9B%BE/fc/24.jpg"/>
-        <img src="https://mc-1256137143.cos.ap-guangzhou.myqcloud.com/%E8%BD%AE%E6%92%AD%E5%9B%BE/fc/26.jpg"/>
     </div>
+
+
+
+    <div  style="height: 100px;margin-top: 60px" >
+        <div id="box4">
+            <div style="width: 100%; height: 60px">
+
+                    <a th:if="${toUid} ne 0" style="float: left;margin-left: 12%"  href="javascript:void(0);" onclick="kanjia()" class="button button-3d button-action button-pill" >帮他减价</a>
+
+                    <a th:if="${toUid} eq 0" style="float: left;margin-left: 12%"  href="javascript:void(0);"  class="button button-3d button-action button-pill" >-----</a>
+
+                    <a th:if=" ${isSingUp == true} "  style="float: left;margin-left: 12%" href="javascript:void(0);" onclick="signUp()" class="button button-3d button-action button-pill" >我的减价</a>
+
+                    <a th:if=" ${isSingUp == false}"   style="float: left;margin-left: 12%" href="javascript:void(0);" onclick="signUp()" class="button button-3d button-action button-pill">我要报名</a>
+
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+
+
+    <div class="box" style="height: 300px;margin-top: 60px" >
+        <div id="box3">
+            <div id="box3_1">
+            </div>
+            <div id="box3_2">
+            </div>
+            <div id="box3_3">
+            </div>
+        </div>
+
+    </div>
+
+    <div class="box" style="height: 300px;margin-top: 60px" >
+        <div id="box5">
+            <div id="box5_1">
+            </div>
+            <div id="box5_2">
+            </div>
+            <div id="box5_3">
+            </div>
+        </div>
+
+    </div>
+
+    <div class="box" style="height: 300px;margin-top: 60px" >
+        <div id="box6">
+            <div id="box6_1">
+            </div>
+            <div id="box6_2">
+            </div>
+            <div id="box6_3">
+            </div>
+        </div>
+
+    </div>
+
+    <div class="box" style="margin-top: 60px" >
+        <div id="box7">
+            <div id="box7_1" style="width:90%;font-size: 22px;padding-top: 10px;padding-bottom: 10px;border-bottom: red solid 1px;margin-left: 5%">
+                <span style="text-align: left;margin-left: 10px">排名</span>
+                <span style="text-align: left;margin-left: 20px">头像</span>
+                <span style="text-align: left;margin-left: 40px">昵称</span>
+                <span style="text-align: right;margin-right: 10px;float: right">完成</span>
+            </div>
+            <div id="box7_2" style="width:90%;margin-left: 5%">
+                <ul style="margin-top: 20px">
+                    <li>
+                        <div class="helper-content" >
+                            <div class="helper-index" style="height: 60px;width: 60px;float: left;margin-left: 0px;line-height: 55px;text-align: center">
+                                1
+                            </div>
+                            <div class="helper-image" style="height: 60px;width: 60px;float: left;margin-left: 10px">
+                                <img src="/images/icon-product.png" width="60px" height="60px">
+                            </div>
+                            <div class="helper-info" style="height: 60px;width: 60px;float: left;margin-left: 30px;line-height: 55px;text-align: center">
+                                xkang
+                            </div>
+                            <div class="helper-result" style="height: 60px;width: 60px;float: right;margin-right: 10px;line-height: 55px;text-align: center">
+                                    30%
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="helper-content" >
+                            <div class="helper-index" style="height: 60px;width: 60px;float: left;margin-left: 0px;line-height: 55px;text-align: center">
+                                1
+                            </div>
+                            <div class="helper-image" style="height: 60px;width: 60px;float: left;margin-left: 10px">
+                                <img src="/images/icon-product.png" width="60px" height="60px">
+                            </div>
+                            <div class="helper-info" style="height: 60px;width: 60px;float: left;margin-left: 30px;line-height: 55px;text-align: center">
+                                xkang
+                            </div>
+                            <div class="helper-result" style="height: 60px;width: 60px;float: right;margin-right: 10px;line-height: 55px;text-align: center">
+                                30%
+                            </div>
+                        </div>
+                    </li>  <li>
+                    <div class="helper-content" >
+                        <div class="helper-index" style="height: 60px;width: 60px;float: left;margin-left: 0px;line-height: 55px;text-align: center">
+                            1
+                        </div>
+                        <div class="helper-image" style="height: 60px;width: 60px;float: left;margin-left: 10px">
+                            <img src="/images/icon-product.png" width="60px" height="60px">
+                        </div>
+                        <div class="helper-info" style="height: 60px;width: 60px;float: left;margin-left: 30px;line-height: 55px;text-align: center">
+                            xkang
+                        </div>
+                        <div class="helper-result" style="height: 60px;width: 60px;float: right;margin-right: 10px;line-height: 55px;text-align: center">
+                            30%
+                        </div>
+                    </div>
+                </li>  <li>
+                    <div class="helper-content" >
+                        <div class="helper-index" style="height: 60px;width: 60px;float: left;margin-left: 0px;line-height: 55px;text-align: center">
+                            1
+                        </div>
+                        <div class="helper-image" style="height: 60px;width: 60px;float: left;margin-left: 10px">
+                            <img src="/images/icon-product.png" width="60px" height="60px">
+                        </div>
+                        <div class="helper-info" style="height: 60px;width: 60px;float: left;margin-left: 30px;line-height: 55px;text-align: center">
+                            xkang
+                        </div>
+                        <div class="helper-result" style="height: 60px;width: 60px;float: right;margin-right: 10px;line-height: 55px;text-align: center">
+                            30%
+                        </div>
+                    </div>
+                </li>
+                </ul>
+            </div>
+
+        </div>
+
+    </div>
+
     <div style="width: 60%;height: 70px;font-size: 18px;color: #ffffff;text-align: center;margin-left: 20%;margin-top: 20px">
 
     <span>咨询电话：0797-2928888</span>
         </br>
-        <a href="tel:0797-2928888"><button id="openCall">立即拨打</button></a>
-
+        <a href="tel:0797-2928888" class="button button-raised button-primary button-pill" style="width: 160px;margin-top: 10px">立即拨打</a>
     </div>
 
     <br>
@@ -265,9 +481,9 @@
 </body>
 <script>
     $(function(){
-          var index = layer.load(1, {
+         /* var index = layer.load(1, {
              shade: [0.1,'#fff']//0.1透明度的白色背景
-          });
+          });*/
         var url = location.href.split('#').toString();//url不能写死
         $.ajax({
             type : "get",
@@ -320,7 +536,7 @@
                 //alert('click shared');
             },
             success: function (res) {
-                addPrize(2)
+                layer.alert('分享成功');
             },
             cancel: function (res) {
                 //alert('shared cancle');
@@ -339,7 +555,7 @@
             dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
             success: function () {
                 // 用户确认分享后执行的回调函数
-                addPrize(1)
+                layer.alert('分享成功');
             },
             cancel: function () {
                 // 用户取消分享后执行的回调函数
@@ -682,7 +898,7 @@
     var num = 0;
 
     var userInfo =[];
-    $.ajax({
+    /*$.ajax({
         url: '/fc/lunbo/web/list',
         type: 'get',
         dataType: 'json',
@@ -718,7 +934,7 @@
 
         }
 
-    })
+    })*/
 
 
     function signUp(pid,id) {
@@ -731,7 +947,7 @@
             ,btn: ['领取', '取消']
             ,yes: function(index){
                   var uname =  $("#uname").val();
-                var phone =  $("#phone").val();
+                  var phone =  $("#phone").val();
                     $.ajax({
                         url: '/kanjia/kanjiaUser/web/add',
                         type: 'post',
@@ -740,19 +956,10 @@
                         success: function (res) {
                             console.info(res);
                             if (res.code===0){
-                                layer.open({
-                                    content: '报名成功'
-                                    ,skin: 'msg'
-                                    ,time: 2 //2秒后自动关闭
-                                });
+                                layer.alert('报名成功');
                                 setTimeout("location.reload()",2000);
                             }else{
-                                layer.open({
-                                    content: '报名失败'
-                                    ,skin: 'msg'
-                                    ,time: 2 //2秒后自动关闭
-                                });
-
+                                layer.alert('报名失败');
                             }
                         },
                         error: function (err) {
@@ -796,6 +1003,18 @@
             }
         });
     }
+
+    $.leftTime("2019/01/22 23:45:24",function(d){
+        if(d.status){
+            if(d.status){
+                var $dateShow1=$("#dateShow1");
+                $dateShow1.find(".d").html(d.d);
+                $dateShow1.find(".h").html(d.h);
+                $dateShow1.find(".m").html(d.m);
+                $dateShow1.find(".s").html(d.s);
+            }
+        }
+    });
 </script>
 
 
