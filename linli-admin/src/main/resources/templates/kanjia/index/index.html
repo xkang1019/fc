@@ -145,7 +145,7 @@
             .date-s-span{ background:#f00;}
             .date-select-a{margin-right:5px;}
 
-            #title1{
+            .title1{
                 float: left;
                 width:30%;
                 height:30px;
@@ -153,24 +153,24 @@
             #dateShow1{
                 float: right;
             }
-            #box1{
+            .box1{
                 width:70% ;
                 margin-left: 15%;
                 padding-top: 10px;
                 font-size: 22px;
             }
 
-            #box2{
+            .box2{
                 height: 200px;
                 margin-top: 30px;
             }
-            #box2_1{
+           .box2_1{
                 margin-left: 5%;
                 float: left;
                 height: 100%;
                 width: 30%;
             }
-            #box2_2{
+            .box2_2{
                 height: 100%;
                 width: 60%;
                 float: left;
@@ -226,17 +226,17 @@
     <meta name="viewport" content="width=640, user-scalable=no, target-densitydpi=device-dpi"><!--移动端版本兼容 end -->
 
 
-<body id="body" class="s-bg-ddd pc no-3d" style="-webkit-user-select: none;" onload="init()" >
+<body id="body" class="s-bg-ddd pc no-3d" style="-webkit-user-select: none;"  >
 
 
 <div id="music">
 <span id="musicControl">
  <a id="mc_play" class="on" onclick="play_music()" style="height: 50px;width: 50px">
-     <audio loop src="https://mc-1256137143.cos.ap-guangzhou.myqcloud.com/%E8%BD%AE%E6%92%AD%E5%9B%BE/fc/5417e3ba4295f.mp3" id="audio" autoplay preload="auto">该浏览器不支持audio属性</audio>
+     <audio loop src="/music/301204363036522.mp3" id="audio" autoplay preload="auto">该浏览器不支持audio属性</audio>
  </a>
  </span>
 </div>
-<div style="background-image: url('/images/369.jpg');position: fixed;height: 100%;width: 100%;z-index: 1"></div>
+<div style="background: url('/images/5639b6003af33a8785bf5e19c25c10385243b5e7.jpg'); position: fixed;height: 100%;width: 100%;z-index: 1"></div>
 <div style="position: fixed;height: 50px;width: 100px;z-index: 1;top: 30%;left: 300px">
     <img src="/images/898.png">
 </div>
@@ -260,15 +260,15 @@
     <!--<img src="/images/20181027124419.png"/>-->
         <!--onclick="selCount()"-->
 
-        <audio  th:src="@{/music/load.mp3}" id="shakingAudio"  >该浏览器不支持audio属性</audio>
+      <!--  <audio  th:src="@{/music/load.mp3}" id="shakingAudio"  >该浏览器不支持audio属性</audio>
         <audio  th:src="@{/music/load.mp3}" id="shakingResult"  >该浏览器不支持audio属性</audio>
-
+-->
 
 
 
     <div class="box" style="margin-top: 50px;  height: 50px;">
-        <div id="box1">
-        <div id="title1"><span>活动倒计时:</span></div>
+        <div class="box1">
+        <div class="title1"><span>活动倒计时:</span></div>
         <div class="data-show-box" id="dateShow1">
             <span class="date-tiem-span d">00</span>天
             <span class="date-tiem-span h">00</span>时
@@ -280,20 +280,49 @@
     </div>
 
     <div class="box" style="height: 200px" >
-        <div id="box2">
-            <div id="box2_1">
-                <img src="/images/icon-product.png" width="150px" height="170px" style="margin-top: 15px">
+        <div class="box2">
+            <div class="box2_1">
+                <img src="/images/xxxxx.png" width="150px" height="170px" style="margin-top: 15px;border-radius: 50%">
             </div>
-            <div id="box2_2">
-                <div class="box2_2_info" style="margin-top: 30px">大华 · 红樾山之夜门票</div>
+            <div class="box2_2">
+                <div class="box2_2_info" style="margin-top: 30px"><h3>大华 · 红樾山之夜门票</h3></div>
                 <div class="box2_2_info">
-                    <span>原价：260</span><span class="box2_2_info_margin">低价：189</span>
+                    <span>原价：<span style="text-decoration:line-through" th:text="${originalPrice}"></span></span><span class="box2_2_info_margin">底价：<span th:text="${floorPrice}"></span></span>
                 </div>
                 <div class="box2_2_info">
-                    <span>数量：260</span><span class="box2_2_info_margin">剩余：189</span>
+                    <span>数量：<span th:text="${productNum}"></span></span><span class="box2_2_info_margin">剩余：<span th:text="${surplusNum}"></span></span>
+                </div>
+                <!--<div class="box2_2_info">
+                    <span>现价：<span style="color: red" th:text="${presentPrice}"></span></span>
+                </div>-->
+            </div>
+        </div>
+
+    </div>
+
+
+    <div   class="box" style="height: 200px" >
+        <div class="box2">
+            <div class="box2_1">
+                <img th:src="${uimg}" width="150px" height="170px" style="margin-top: 15px;border-radius: 50%">
+            </div>
+            <div class="box2_2">
+                <div class="box2_2_info" style="margin-top: 30px"><h3 th:text="${nickname}">大华 · 红樾山</h3></div>
+                <div class="box2_2_info">
+                    <span th:if="${isSingUp == false}">请点击下方按钮报名吧！</span>
+                    <span th:if="${isSingUp == true}"> 好友共帮忙减掉了<span th:text="${originalPrice} - ${presentPrice}"></span>元</span>
+
+                    <!--     <span>原价：<span style="text-decoration:line-through" th:text="${originalPrice}"></span></span><span class="box2_2_info_margin">底价：<span th:text="${floorPrice}"></span></span>
+                    --> </div>
+               <!-- <div class="box2_2_info">
+                    <span>数量：<span th:text="${productNum}"></span></span><span class="box2_2_info_margin">剩余：<span th:text="${surplusNum}"></span></span>
+                </div>-->
+                <div class="box2_2_info" style="margin-top: 30px">
+                    <span>现价：<span style="color: red" th:text="${presentPrice}"></span></span>
                 </div>
             </div>
         </div>
+
 
     </div>
 
@@ -303,13 +332,13 @@
         <div id="box4">
             <div style="width: 100%; height: 60px">
 
-                    <a th:if="${toUid} ne 0" style="float: left;margin-left: 12%"  href="javascript:void(0);" onclick="kanjia()" class="button button-3d button-action button-pill" >帮他减价</a>
+                    <a th:if="${toUid} ne 0" style="float: left;margin-left: 12%;color: black"  href="javascript:void(0);"  onclick="kanjia()" class="button button-3d button-action button-pill" >帮他减价</a>
 
-                    <a th:if="${toUid} eq 0" style="float: left;margin-left: 12%"  href="javascript:void(0);"  class="button button-3d button-action button-pill" >-----</a>
+                    <a th:if="${toUid} eq 0" style="float: left;margin-left: 12%;color: black" href="javascript:void(0);"  onclick="openActivityUrl()"  class="button button-3d button-action button-pill" >更多活动</a>
 
-                    <a th:if=" ${isSingUp == true} "  style="float: left;margin-left: 12%" href="javascript:void(0);" onclick="signUp()" class="button button-3d button-action button-pill" >我的减价</a>
+                    <a th:if=" ${isSingUp == true} "  style="float: left;margin-left: 12%;color: black" href="javascript:void(0);" onclick="selme()" class="button button-3d button-action button-pill" >我的减价</a>
 
-                    <a th:if=" ${isSingUp == false}"   style="float: left;margin-left: 12%" href="javascript:void(0);" onclick="signUp()" class="button button-3d button-action button-pill">我要报名</a>
+                    <a th:if=" ${isSingUp == false}"   style="float: left;margin-left: 12%;color: black" href="javascript:void(0);" onclick="signUp()" class="button button-3d button-action button-pill">我要报名</a>
 
 
             </div>
@@ -322,38 +351,50 @@
 
 
 
+
+
+
+
     <div class="box" style="height: 300px;margin-top: 60px" >
-        <div id="box3">
-            <div id="box3_1">
-            </div>
-            <div id="box3_2">
-            </div>
-            <div id="box3_3">
-            </div>
+        <div id="box3" style="text-align: center;font-size: 20px;padding-top:30px">
+            <p>BEYOND</p>
+            <p> 殿堂级音乐唱作人</p>
+            <p> 香港乐坛摇滚始祖</p>
+            <p>————❥.°ʚ 青春ɞ°. ❥————</p>
+            <p> 随BEYOND启幕，又随BEYOND谢幕。</p>
+            <p> ————❥.°ʚ 人生ɞ°. ❥————</p>
+            <p> 伴着BEYOND迎风击雨、高唱我歌；</p>
+            <p> 又伴着BEYOND走遍千里、勇创光辉。</p>
+            <p>这一次让我们再次唱响光辉岁月</p>
         </div>
 
     </div>
 
     <div class="box" style="height: 300px;margin-top: 60px" >
-        <div id="box5">
-            <div id="box5_1">
-            </div>
-            <div id="box5_2">
-            </div>
-            <div id="box5_3">
-            </div>
+        <div id="box5" style="text-align: center;font-size: 20px;padding-top:30px">
+            <p><h2>活动规则</h2></p>
+            <p>1. 砍价后，参与者直接到营业厅</p>
+            <p>   出示本页面，支付购买</p>
+            <p>2. 需要小伙伴帮你砍价</p>
+            <p>3. 奖品份数有限，达到目标就会减少一份，先到先得</p>
+            <p>4. 每人每天可以帮人砍价优惠一次</p>
+            <p>5. 完成后马上联系工作人员兑换把。</p>
+
         </div>
 
     </div>
 
     <div class="box" style="height: 300px;margin-top: 60px" >
-        <div id="box6">
-            <div id="box6_1">
-            </div>
-            <div id="box6_2">
-            </div>
-            <div id="box6_3">
-            </div>
+        <div id="box6" style="text-align: center;font-size: 20px;padding-top:30px;line-height: 50px">
+            <p><h2>领奖信息</h2></p>
+            <p>兑换时间：2018年12月10日 - 1月1日</p>
+            <p></p>
+            <p>兑换地址：瑞金市经开区长征大道与金龙二路交汇处
+                大华·红樾山营销中心</p>
+            <p></p>
+            <p>联系电话：0797-2928888</p>
+            <p></p>
+
         </div>
 
     </div>
@@ -364,72 +405,12 @@
                 <span style="text-align: left;margin-left: 10px">排名</span>
                 <span style="text-align: left;margin-left: 20px">头像</span>
                 <span style="text-align: left;margin-left: 40px">昵称</span>
-                <span style="text-align: right;margin-right: 10px;float: right">完成</span>
+                <span style="text-align: right;margin-right: 10px;float: right">当前价格</span>
             </div>
             <div id="box7_2" style="width:90%;margin-left: 5%">
-                <ul style="margin-top: 20px">
-                    <li>
-                        <div class="helper-content" >
-                            <div class="helper-index" style="height: 60px;width: 60px;float: left;margin-left: 0px;line-height: 55px;text-align: center">
-                                1
-                            </div>
-                            <div class="helper-image" style="height: 60px;width: 60px;float: left;margin-left: 10px">
-                                <img src="/images/icon-product.png" width="60px" height="60px">
-                            </div>
-                            <div class="helper-info" style="height: 60px;width: 60px;float: left;margin-left: 30px;line-height: 55px;text-align: center">
-                                xkang
-                            </div>
-                            <div class="helper-result" style="height: 60px;width: 60px;float: right;margin-right: 10px;line-height: 55px;text-align: center">
-                                    30%
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="helper-content" >
-                            <div class="helper-index" style="height: 60px;width: 60px;float: left;margin-left: 0px;line-height: 55px;text-align: center">
-                                1
-                            </div>
-                            <div class="helper-image" style="height: 60px;width: 60px;float: left;margin-left: 10px">
-                                <img src="/images/icon-product.png" width="60px" height="60px">
-                            </div>
-                            <div class="helper-info" style="height: 60px;width: 60px;float: left;margin-left: 30px;line-height: 55px;text-align: center">
-                                xkang
-                            </div>
-                            <div class="helper-result" style="height: 60px;width: 60px;float: right;margin-right: 10px;line-height: 55px;text-align: center">
-                                30%
-                            </div>
-                        </div>
-                    </li>  <li>
-                    <div class="helper-content" >
-                        <div class="helper-index" style="height: 60px;width: 60px;float: left;margin-left: 0px;line-height: 55px;text-align: center">
-                            1
-                        </div>
-                        <div class="helper-image" style="height: 60px;width: 60px;float: left;margin-left: 10px">
-                            <img src="/images/icon-product.png" width="60px" height="60px">
-                        </div>
-                        <div class="helper-info" style="height: 60px;width: 60px;float: left;margin-left: 30px;line-height: 55px;text-align: center">
-                            xkang
-                        </div>
-                        <div class="helper-result" style="height: 60px;width: 60px;float: right;margin-right: 10px;line-height: 55px;text-align: center">
-                            30%
-                        </div>
-                    </div>
-                </li>  <li>
-                    <div class="helper-content" >
-                        <div class="helper-index" style="height: 60px;width: 60px;float: left;margin-left: 0px;line-height: 55px;text-align: center">
-                            1
-                        </div>
-                        <div class="helper-image" style="height: 60px;width: 60px;float: left;margin-left: 10px">
-                            <img src="/images/icon-product.png" width="60px" height="60px">
-                        </div>
-                        <div class="helper-info" style="height: 60px;width: 60px;float: left;margin-left: 30px;line-height: 55px;text-align: center">
-                            xkang
-                        </div>
-                        <div class="helper-result" style="height: 60px;width: 60px;float: right;margin-right: 10px;line-height: 55px;text-align: center">
-                            30%
-                        </div>
-                    </div>
-                </li>
+                <ul style="margin-top: 20px" id="rank">
+
+
                 </ul>
             </div>
 
@@ -447,11 +428,11 @@
     <br>
 </div>
 
-<div id="popLayer"  onclick="closeBox(),closePrize(),closeShowMsgUser()">
+<!--<div id="popLayer"  onclick="closeBox(),closePrize(),closeShowMsgUser()">
 
-</div>
+</div>-->
 
-<div id="msgUser" style="display: none">
+<!--<div id="msgUser" style="display: none">
     <img src="https://mc-1256137143.cos.ap-guangzhou.myqcloud.com/%E8%BD%AE%E6%92%AD%E5%9B%BE/fc/guide1.png"  /></div>
 </div>
 
@@ -468,13 +449,17 @@
     <div style="width: 100%">
         <div class="buttonPrize" id="receive"  style="float: left" onclick="jumpUrl('/fc/index/usrPrize')" >领取奖品</div>
         <div class="buttonPrize" id="again" onclick="closePrize()" style="float: right">再来一次</div>
-    </div>
+    </div>-->
 </div>
     <input  id="times" name="times" value="-1" type="hidden" >
     <input  id="token" name="token" th:value="${token}" type="hidden" >
-   <input  id="isSingUp" name="isSingUp" th:value="${isSingUp}" >
-    <input  id="uid" name="uid" th:value="${uid}"  >
-  <input  id="toUid" name="toUid" th:value="${toUid}"  >
+   <input  id="isSingUp" name="isSingUp" th:value="${isSingUp}" hidden>
+    <input  id="uid" name="uid" th:value="${uid}" hidden >
+  <input  id="toUid" name="toUid" th:value="${toUid}"  hidden>
+<input  id="activityEndTime" name="activityEndTime" th:value="${activityEndTime}" hidden >
+<input  id="activityUrl" name="activityUrl" th:value="${activityUrl}" hidden >
+
+
 
 
 
@@ -527,7 +512,7 @@
         var protocol = window.location.protocol;
         var host = window.location.host;
         //分享朋友圈
-        wx.onMenuShareTimeline({
+       /* wx.onMenuShareTimeline({
             title: '你能帮我砍砍吗？',
             link: link,
             imgUrl: 'http://fc.haichenpeisong.com/images/16.jpg',// 自定义图标
@@ -544,7 +529,7 @@
             fail: function (res) {
                 //alert(JSON.stringify(res));
             }
-        });
+        });*/
         //分享给好友
         wx.onMenuShareAppMessage({
             title: '你能帮我砍砍吗？', // 分享标题
@@ -678,8 +663,8 @@
     //var src = "music/5417e3ba4295f.mp3";
     // 初始化Aduio
     var audio = document.getElementById('audio');
-    var shakingAudio = document.getElementById('shakingAudio');
-    var shakingResult = document.getElementById('shakingResult');
+   /* var shakingAudio = document.getElementById('shakingAudio');
+    var shakingResult = document.getElementById('shakingResult');*/
     // audio.src = src;
 
     function play_music() {
@@ -709,7 +694,7 @@
                 a++
             }
         }
-        if (b==0){
+ /*       if (b==0){
             var pormise = shakingAudio.play();
             pormise.then(function () {
             }).catch(function (e) {
@@ -734,23 +719,23 @@
                 shakingResult.load();
                 c++
             }
-        }
+        }*/
 
     });
 
-
+/*
         shakingAudio.setAttribute('src', 'http://fc.haichenpeisong.com/music/5018.mp3');
         shakingAudio.load();
         shakingResult.setAttribute('src', 'http://fc.haichenpeisong.com/music/5012.mp3');
-        shakingResult.load();
+        shakingResult.load();*/
 
 </script>
 
 <script>
-    var times = -1; // 记录摇动次数
+   /* var times = -1; // 记录摇动次数
     var SHAKE_THRESHOLD = 3000;
     var last_update = 0;
-    var x = y = z = last_x = last_y = last_z = 0;
+    var x = y = z = last_x = last_y = last_z = 0;*/
    /* function init() {
         if (window.DeviceMotionEvent) {
             window.addEventListener('devicemotion', deviceMotionHandler, false);
@@ -788,7 +773,7 @@
         }
     }
 */
-    function selCount() {
+   /* function selCount() {
        var token = $("#token").val();
         var index = layer.load(1, {
             shade: [0.1,'#fff'] //0.1透明度的白色背景
@@ -828,7 +813,7 @@
             }
 
         })
-    }
+    }*/
 
 </script>
 
@@ -838,7 +823,7 @@
 
 
 
-    function addPrize(typeparm) {
+   /* function addPrize(typeparm) {
         $.ajax({
             url: '/fc/user/web/addPrize',
             type: 'post',
@@ -864,7 +849,7 @@
             }
 
         })
-    }
+    }*/
     function jumpUrl(url) {
          location.href = url
     }
@@ -895,8 +880,10 @@
 
 
 
+    var pageSize =10;
+    var pageNum =1;
     var num = 0;
-
+    selRankList();
     var userInfo =[];
     /*$.ajax({
         url: '/fc/lunbo/web/list',
@@ -940,11 +927,12 @@
     function signUp(pid,id) {
         var token = $("#token").val();
         layer.open({
-            content: '姓名：<br><br>' +
-            '<input id="uname" class="form-control" style="width: 70%;height: 30px "  type="text">' +
-            '电话：<br><br>' +
+            content: '<br><br>姓名：' +
+            '<input id="uname" class="form-control" style="width: 70%;height: 30px "  type="text"><br><br>' +
+            '电话：' +
             '<input id="phone" class="form-control" style="width: 70%;height: 30px "  type="text">'
-            ,btn: ['领取', '取消']
+            ,btn: ['报名', '取消']
+            ,area: ['80%','300px']
             ,yes: function(index){
                   var uname =  $("#uname").val();
                   var phone =  $("#phone").val();
@@ -986,14 +974,11 @@
                     layer.open({
                          content: '砍价'+res.money+'元'
                         ,skin: 'msg'
-                        ,time: 2 //2秒后自动关闭
                     });
-                    setTimeout("location.reload()",2000);
                 }else{
                     layer.open({
                          content: '已砍价'
                         ,skin: 'msg'
-                        ,time: 2 //2秒后自动关闭
                     });
 
                 }
@@ -1003,8 +988,11 @@
             }
         });
     }
-
-    $.leftTime("2019/01/22 23:45:24",function(d){
+    function selme() {
+        location.href ="/kanjia/index/web/selme";
+    }
+    var  activityEndTime = $("#activityEndTime").val();
+    $.leftTime(activityEndTime,function(d){
         if(d.status){
             if(d.status){
                 var $dateShow1=$("#dateShow1");
@@ -1015,6 +1003,83 @@
             }
         }
     });
+
+    $(function(){
+        $(window).scroll(function(){
+            var aa = $(window).scrollTop(); //当前滚动条滚动的距离
+            var bb = $(window).height();//浏览器当前窗口可视区域高度
+            var cc = $(document).height(); //浏览器当前窗口文档的高度
+
+            console.info(aa);
+            console.info(bb);
+            console.info(cc);
+            if(cc <= aa+bb-100){
+                console.info("下拉加载");
+                selRankList()
+            }
+        })
+    });
+
+
+
+    function selRankList() {
+        $.ajax({
+            url: '/kanjia/kanjiaUser/web/selRankList',
+            type: 'get',
+            dataType: 'json',
+            data: {
+                pageSize: pageSize,
+                pageNum: pageNum,
+                orderByColumn: 'presentprice',
+                isAsc: 'asc'
+            },
+            success: function (res) {
+                if(res.code==0){
+                var total =res.total;
+                var zys = Math.ceil(total/pageSize);
+                console.info("zys",zys)
+                    console.info("pageNum",pageNum)
+                if(pageNum>zys){
+                    return;
+                }
+                   var nowIndex = $("#rank li").length;
+                res.rows.forEach(function (item,index) {
+                    nowIndex++;
+                    var nickname = item.nickname;
+                    if(nickname == null ||nickname==""){
+                        nickname ="***";
+                    }else {
+                        nickname =nickname.substring(0,1)+"**";
+                    }
+                    $("#rank").append('<li> <div class="helper-content" >' +
+                        '                            <div class=helper-index style="height: 60px;width: 60px;float: left;margin-left: 0px;line-height: 55px;text-align: center">' +
+                        '                                '+(nowIndex)+'' +
+                        '                            </div>' +
+                        '                            <div class="helper-image" style="height: 60px;width: 60px;float: left;margin-left: 10px">' +
+                        '                                <img src="'+item.uimg+'" width="60px" height="60px">' +
+                        '                            </div>' +
+                        '                            <div class="helper-info" style="height: 60px;width: 60px;float: left;margin-left: 30px;line-height: 55px;text-align: center">' +
+                        '                                '+nickname+'' +
+                        '                            </div>' +
+                        '                            <div class="helper-result" style="height: 60px;width: 60px;float: right;margin-right: 10px;line-height: 55px;text-align: center">' +
+                        '                                '+item.presentPrice+'' +
+                        '                            </div>' +
+                        '                        </div></li>')
+                })
+                 pageNum++
+                }
+
+            },
+            error: function (err) {
+
+            }
+        });
+    }
+
+    function openActivityUrl() {
+      var activityUrl =  $("#activityUrl").val();
+        location.href = activityUrl;
+    }
 </script>
 
 

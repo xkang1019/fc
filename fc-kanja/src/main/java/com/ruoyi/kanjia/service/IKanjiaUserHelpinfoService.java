@@ -50,5 +50,7 @@ public interface IKanjiaUserHelpinfoService
      * @return 结果
      */
 	public int deleteKanjiaUserHelpinfoByIds(String ids);
+
+	public Double selToUserKanjiaMoneySum(Long uid);
 	
 }

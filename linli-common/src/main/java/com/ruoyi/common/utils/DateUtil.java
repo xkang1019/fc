@@ -811,7 +811,7 @@ public class DateUtil {
         return date1.compareTo(date2);
     }
 
-    private static int compareToDateString(String date1, String date2) {
+    public static int compareToDateString(String date1, String date2) {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         int i = 0;
         try {

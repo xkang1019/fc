@@ -6,10 +6,13 @@ import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.base.AjaxResult;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.enums.BusinessType;
+import com.ruoyi.common.utils.DateUtil;
 import com.ruoyi.framework.web.page.TableDataInfo;
 import com.ruoyi.kanjia.domain.KanjiaUser;
 import com.ruoyi.kanjia.service.IKanjiaUserService;
+import com.ruoyi.system.domain.SysConfig;
 import com.ruoyi.system.domain.SysUser;
+import com.ruoyi.system.service.ISysConfigService;
 import com.ruoyi.web.core.base.BaseController;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -52,7 +55,12 @@ public class KanjiaUserController extends BaseController
 	
 	@Autowired
 	private IKanjiaUserService kanjiaUserService;
-	
+
+
+	@Autowired
+	private ISysConfigService configService;
+
+
 	@RequiresPermissions("kanjia:kanjiaUser:view")
 	@GetMapping()
 	public String kanjiaUser()
@@ -133,35 +141,38 @@ public class KanjiaUserController extends BaseController
 	@Form
 	@PostMapping("/web/add")
 	@ResponseBody
-	public AjaxResult webAddSave(KanjiaUser kanjiaUser,HttpSession session,HttpServletRequest request) throws ServletException, IOException
+	public AjaxResult webAddSave(KanjiaUser kanjiaUser,HttpServletRequest request) throws ServletException, IOException
 	{
-		AjaxResult ajaxResult =getWxImg(session);
-		String nickname = (String) ajaxResult.get("nickname");
-		String uimg = (String) ajaxResult.get("headimgurl");
-		kanjiaUser.setUid(Math.toIntExact(getUserId()));
-		kanjiaUser.setUimg(uimg);
-		kanjiaUser.setNickname(nickname);
-		kanjiaUser.setPresentPrice(new BigDecimal(999));
-		kanjiaUser.setOriginalPrice(new BigDecimal(888));
-		kanjiaUser.setFloorPrice(new BigDecimal(298));
+
+		SysConfig activityEndTime = configService.selectConfigById((long) 107);
+		int end = DateUtil.compareToDateString(DateUtil.getStringDate(), activityEndTime.getConfigValue());
+		if (end == 1) {
+			return error("活动已结束");
+		}
+
+		/*//现价
+		SysConfig presentPrice = configService.selectConfigById((long)100);*/
+		//低价
+		SysConfig floorPrice =   configService.selectConfigById((long)101);
+		//原价
+		SysConfig originalPrice =  configService.selectConfigById((long)102);
+
+		SysUser sysUser =  getUser();
+		kanjiaUser.setUid(Math.toIntExact(sysUser.getUserId()));
+		kanjiaUser.setUimg(sysUser.getAvatar());
+		kanjiaUser.setNickname(sysUser.getUserName());
+		kanjiaUser.setPresentPrice(new BigDecimal(originalPrice.getConfigValue()));
+		kanjiaUser.setOriginalPrice(new BigDecimal(originalPrice.getConfigValue()));
+		kanjiaUser.setFloorPrice(new BigDecimal(floorPrice.getConfigValue()));
 		return toAjax(kanjiaUserService.insertKanjiaUser(kanjiaUser));
 	}
 
-	private AjaxResult getWxImg(HttpSession session) throws ServletException, IOException {
-		String openid = (String) session.getAttribute("openid");
-		HttpGet httpGet = new HttpGet("https://api.weixin.qq.com/sns/userinfo?access_token="+ GetAccess_token.getAccess_token()+"&openid="+openid+"&lang=zh_CN");
-		//设置请求器的配置
-		HttpClient httpClient = HttpClients.createDefault();
-		HttpResponse res = httpClient.execute(httpGet);
-		HttpEntity entity = res.getEntity();
-		String result = EntityUtils.toString(entity, "UTF-8");
-		JSONObject jsonObject = JSONObject.parseObject(result);
-		System.out.println(jsonObject.toJSONString());
-		if("".equals(jsonObject.getString("nickname"))||jsonObject.getString("nickname")==null){
-			return error("获取openid失败");
-		}
-
-		return  success().put("nickname",jsonObject.getString("nickname")).put("headimgurl",jsonObject.getString("headimgurl"));
+	@GetMapping("/web/selRankList")
+	@ResponseBody
+	public TableDataInfo selRankList(){
+		startPage();
+		List<KanjiaUser> list = kanjiaUserService.selectKanjiaUserList(new KanjiaUser());
+		return getDataTable(list);
 	}
 	
 }

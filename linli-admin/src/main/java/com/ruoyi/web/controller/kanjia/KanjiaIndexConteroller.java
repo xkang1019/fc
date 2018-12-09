@@ -8,9 +8,13 @@ import com.ruoyi.common.utils.DateUtil;
 import com.ruoyi.fc.domain.User;
 import com.ruoyi.fc.service.IUserService;
 import com.ruoyi.framework.shiro.service.PasswordService;
+import com.ruoyi.framework.util.ShiroUtils;
 import com.ruoyi.kanjia.domain.KanjiaUser;
+import com.ruoyi.kanjia.service.IKanjiaUserHelpinfoService;
 import com.ruoyi.kanjia.service.IKanjiaUserService;
+import com.ruoyi.system.domain.SysConfig;
 import com.ruoyi.system.domain.SysUser;
+import com.ruoyi.system.service.ISysConfigService;
 import com.ruoyi.system.service.ISysUserService;
 import com.ruoyi.web.core.base.BaseController;
 import org.apache.http.HttpEntity;
@@ -68,6 +72,12 @@ public class KanjiaIndexConteroller extends BaseController {
     @Autowired
     private IKanjiaUserService kanjiaUserService;
 
+    @Autowired
+    private IKanjiaUserHelpinfoService kanjiaUserHelpinfoService;
+
+    @Autowired
+    private ISysConfigService configService;
+
 
 //    @GetMapping()
 //    public String login(String code, ModelMap modelMap)
@@ -77,47 +87,169 @@ public class KanjiaIndexConteroller extends BaseController {
 //        return prefix + "/fclogin";
 //    }
 
-
     @GetMapping("/jump")
-    public String jump(ModelMap mmp,int uid)
+    public String jump(ModelMap mmp,String uid)
     {
+        System.out.println("uid:"+uid);
         mmp.put("toUid",uid);
         return prefix + "/jump";
+
     }
 
 
     @GetMapping("/test")
     public String test(ModelMap modelMap)
     {
+        SysConfig activityEndTime = configService.selectConfigById((long)107);
+        SysConfig activityUrl = configService.selectConfigById((long)109);
         modelMap.put("isSingUp",false);
         modelMap.put("uid",1);
         modelMap.put("isSingUp",true);
         modelMap.put("toUid",0);
         modelMap.put("token",2);
         modelMap.put("prizeCount",3);
+        modelMap.put("presentPrice",100);
+        modelMap.put("floorPrice",200);
+        modelMap.put("originalPrice",300);
+        modelMap.put("productNum",400);
+        modelMap.put("surplusNum",500);
+        modelMap.put("activityEndTime",activityEndTime.getConfigValue());
+        modelMap.put("activityUrl",activityUrl.getConfigValue());
+        modelMap.put("uimg",getUser().getAvatar());
+        modelMap.put("nickname",getUser().getUserName());
         return prefix + "/index";
     }
 
     @Form
     @GetMapping("/index")
-    public String prize(String code,int state, ModelMap modelMap,HttpServletRequest request,HttpSession session) throws ServletException, IOException {
-        getopenIdWeb(code,session);
-        int  prizeCount =iSysUserService.selectUserPrizeCountById(getUserId());
+    public String prize(String code,String state, ModelMap modelMap,HttpServletRequest request) throws ServletException, IOException {
+        getopenIdWeb(code);
+       // int  prizeCount =iSysUserService.selectUserPrizeCountById(getUserId());
         String token = (String) request.getAttribute("token");
         System.out.println("token:"+token);
         KanjiaUser kanjiaUser = new KanjiaUser();
         kanjiaUser.setUid(Math.toIntExact(getUserId()));
         List<KanjiaUser> list = kanjiaUserService.selectKanjiaUserList(kanjiaUser);
+
+
+        //现价
+        SysConfig presentPrice = configService.selectConfigById((long)100);
+        //低价
+        SysConfig floorPrice =   configService.selectConfigById((long)101);
+        //原价
+        SysConfig originalPrice =  configService.selectConfigById((long)102);
+        //产品总
+        SysConfig productNum =  configService.selectConfigById((long)103);
+        //产品剩余
+        SysConfig surplusNum =  configService.selectConfigById((long)104);
+
+        SysConfig activityEndTime = configService.selectConfigById((long)107);
+
+        SysConfig activityUrl = configService.selectConfigById((long)109);
+
+
         if (list.size()>0){
             modelMap.put("isSingUp",true);
             modelMap.put("uid",getUserId());
+
+            if ("0".equals(state)){
+                modelMap.put("uimg",getUser().getAvatar());
+                modelMap.put("nickname",getUser().getUserName());
+                modelMap.put("presentPrice",list.get(0).getPresentPrice());
+            }else {
+                KanjiaUser kanjiaUser2 = new KanjiaUser();
+                kanjiaUser.setUid(Integer.valueOf(state));
+                List<KanjiaUser> list2 = kanjiaUserService.selectKanjiaUserList(kanjiaUser);
+                modelMap.put("uimg",list2.get(0).getUimg());
+                modelMap.put("nickname",list2.get(0).getNickname());
+                modelMap.put("presentPrice",list2.get(0).getPresentPrice());
+            }
+
         }else {
+
+            if ("0".equals(state)){
+                modelMap.put("uimg",getUser().getAvatar());
+                modelMap.put("nickname",getUser().getUserName());
+            }else {
+                KanjiaUser kanjiaUser2 = new KanjiaUser();
+                kanjiaUser.setUid(Integer.valueOf(state));
+                List<KanjiaUser> list2 = kanjiaUserService.selectKanjiaUserList(kanjiaUser);
+                modelMap.put("uimg",list2.get(0).getUimg());
+                modelMap.put("nickname",list2.get(0).getNickname());
+            }
             modelMap.put("isSingUp",false);
+            modelMap.put("presentPrice",originalPrice.getConfigValue());
 
         }
+
+
         modelMap.put("toUid",state);
         modelMap.put("token",token);
-        modelMap.put("prizeCount",prizeCount);
+      //  modelMap.put("prizeCount",prizeCount);
+
+        modelMap.put("floorPrice",floorPrice.getConfigValue());
+        modelMap.put("originalPrice",originalPrice.getConfigValue());
+        modelMap.put("productNum",productNum.getConfigValue());
+        modelMap.put("surplusNum",surplusNum.getConfigValue());
+        modelMap.put("activityEndTime",activityEndTime.getConfigValue());
+        modelMap.put("activityUrl",activityUrl.getConfigValue());
+        return prefix + "/index";
+    }
+
+    /**
+     * 我的减价
+     * @param modelMap
+     * @param request
+     * @return
+     * @throws ServletException
+     * @throws IOException
+     */
+    @Form
+    @GetMapping("/web/selme")
+    public String prize(ModelMap modelMap,HttpServletRequest request) throws ServletException, IOException {
+
+       // int  prizeCount =iSysUserService.selectUserPrizeCountById(getUserId());
+        String token = (String) request.getAttribute("token");
+        System.out.println("token:"+token);
+        KanjiaUser kanjiaUser = new KanjiaUser();
+        kanjiaUser.setUid(Math.toIntExact(getUserId()));
+        List<KanjiaUser> list = kanjiaUserService.selectKanjiaUserList(kanjiaUser);
+
+        //现价
+        SysConfig presentPrice = configService.selectConfigById((long)100);
+        //低价
+        SysConfig floorPrice =   configService.selectConfigById((long)101);
+        //原价
+        SysConfig originalPrice =  configService.selectConfigById((long)102);
+        //产品总
+        SysConfig productNum =  configService.selectConfigById((long)103);
+        //产品剩余
+        SysConfig surplusNum =  configService.selectConfigById((long)104);
+
+        SysConfig activityEndTime = configService.selectConfigById((long)107);
+
+        SysConfig activityUrl = configService.selectConfigById((long)109);
+
+        if (list.size()>0){
+            modelMap.put("isSingUp",true);
+            modelMap.put("uid",getUserId());
+            modelMap.put("presentPrice",list.get(0).getPresentPrice());
+            modelMap.put("uimg",getUser().getAvatar());
+            modelMap.put("nickname",getUser().getUserName());
+        }else {
+            modelMap.put("isSingUp",false);
+            modelMap.put("presentPrice",originalPrice.getConfigValue());
+
+        }
+        modelMap.put("toUid",0);
+        modelMap.put("token",token);
+       // modelMap.put("prizeCount",prizeCount);
+        modelMap.put("floorPrice",floorPrice.getConfigValue());
+        modelMap.put("originalPrice",originalPrice.getConfigValue());
+        modelMap.put("productNum",productNum.getConfigValue());
+        modelMap.put("surplusNum",surplusNum.getConfigValue());
+        modelMap.put("activityEndTime",activityEndTime.getConfigValue());
+        modelMap.put("activityUrl",activityUrl.getConfigValue());
         return prefix + "/index";
     }
 
@@ -152,8 +284,7 @@ public class KanjiaIndexConteroller extends BaseController {
     }
 
 
-    private AjaxResult getopenIdWeb(String code, HttpSession session) throws ServletException, IOException {
-        System.out.println(code+":code");
+    private AjaxResult getopenIdWeb(String code) throws ServletException, IOException {
         HttpGet httpGet = new HttpGet("https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx28cc809e924ed56b&secret=c4ac7344f8ae120f9da65019e7f48d0d&code="+code+"&grant_type=authorization_code");
         //设置请求器的配置
         HttpClient httpClient = HttpClients.createDefault();
@@ -165,24 +296,23 @@ public class KanjiaIndexConteroller extends BaseController {
         if("".equals(jsonObject.getString("openid"))||jsonObject.getString("openid")==null){
             return error("获取openid失败");
         }
-        session.setAttribute("opendi",jsonObject.getString("openid"));
         System.out.println("unionid:"+jsonObject.getString("unionid"));
-        return  ajaxLogin(MD5.MD5Encode(jsonObject.getString("openid")),null);
+        return  ajaxLogin(jsonObject.getString("openid"),jsonObject.getString("access_token"));
     }
 
 
 
-    private AjaxResult ajaxLogin(String openId, @RequestParam(required = false) String name) {
+    private AjaxResult ajaxLogin(String openId,String access_token) throws ServletException, IOException{
         String password ="123456";
         System.out.println("--------------------"+openId+"----------"+password);
-        Map<String, Object> map = new HashMap<>(16);
-        map.put("username", openId);
         int userindex  = 0; //userService.list(map).size();
         String stuats = sysUserService.checkLoginNameUnique(openId);
         if (stuats.equals(UserConstants.MENU_NAME_UNIQUE)){
+            AjaxResult ajaxResult =  getWxImg(access_token,openId);
             SysUser user = new SysUser();
             user.setLoginName(openId);
-            user.setUserName("微信用户");
+            user.setUserName((String) ajaxResult.get("nickname"));
+            user.setAvatar((String) ajaxResult.get("headimgurl"));
             user.setSalt("123456");
             user.setPassword(passwordService.encryptPassword(openId, openId, user.getSalt()));
             user.setCreateBy(openId);
@@ -212,6 +342,24 @@ public class KanjiaIndexConteroller extends BaseController {
         return error("未授权");
     }
 
+
+    private AjaxResult getWxImg(String access_token,String openid) throws ServletException, IOException {
+        System.out.println("openid:"+openid);
+        System.out.println("access_token:"+access_token);
+        HttpGet httpGet = new HttpGet("https://api.weixin.qq.com/sns/userinfo?access_token="+access_token+"&openid="+openid+"&lang=zh_CN");
+        //设置请求器的配置
+        HttpClient httpClient = HttpClients.createDefault();
+        HttpResponse res = httpClient.execute(httpGet);
+        HttpEntity entity = res.getEntity();
+        String result = EntityUtils.toString(entity, "UTF-8");
+        JSONObject jsonObject = JSONObject.parseObject(result);
+        System.out.println(jsonObject.toJSONString());
+        if("".equals(jsonObject.getString("nickname"))||jsonObject.getString("nickname")==null){
+            return error("获取openid失败");
+        }
+
+        return  success().put("nickname",jsonObject.getString("nickname")).put("headimgurl",jsonObject.getString("headimgurl"));
+    }
 
 
 }

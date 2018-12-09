@@ -58,5 +58,12 @@ public interface KanjiaUserHelpinfoMapper
      * @return 结果
      */
 	public int deleteKanjiaUserHelpinfoByIds(String[] ids);
+
+	/**
+	 * 查询被砍人总金额
+	 * @param uid
+	 * @return
+	 */
+	public Double selToUserKanjiaMoneySum(Long uid);
 	
 }

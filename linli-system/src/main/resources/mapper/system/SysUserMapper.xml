@@ -181,6 +181,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  			<if test="remark != null and remark != ''">remark,</if>
 		    <if test="prize != null ">prize,</if>
 		    <if test="sumprize != null ">sumprize,</if>
+		    <if test="avatar != null ">avatar,</if>
+
  			create_time
  		)values(
  			<if test="userId != null and userId != ''">#{userId},</if>
@@ -197,6 +199,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  			<if test="remark != null and remark != ''">#{remark},</if>
 		    <if test="prize != null ">#{prize},</if>
 	     	<if test="sumprize != null ">#{sumprize},</if>
+			<if test="avatar != null ">#{avatar},</if>
  			sysdate()
  		)
 	</insert>

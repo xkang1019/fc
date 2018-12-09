@@ -29,6 +29,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectKanjiaUserHelpinfoVo"/>
         where id = #{id}
     </select>
+
+    <select id="selToUserKanjiaMoneySum" parameterType="Long" resultType="java.lang.Double">
+       SELECT SUM(money)  FROM kanjia_user_helpinfo WHERE uid = #{uid}
+    </select>
         
     <insert id="insertKanjiaUserHelpinfo" parameterType="KanjiaUserHelpinfo">
         insert into kanjia_user_helpinfo

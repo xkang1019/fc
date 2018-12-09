@@ -16,6 +16,7 @@ import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication(exclude = { DataSourceAutoConfiguration.class})
 @MapperScan("com.ruoyi.*.mapper")
+@EnableCaching//开启注解驱动的缓存管理
 public class LinLiApplication
 {
 

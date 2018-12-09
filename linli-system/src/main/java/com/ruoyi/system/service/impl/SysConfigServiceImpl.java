@@ -2,6 +2,9 @@ package com.ruoyi.system.service.impl;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.support.Convert;
@@ -28,6 +31,7 @@ public class SysConfigServiceImpl implements ISysConfigService
      * @return 参数配置信息
      */
     @Override
+    @Cacheable(cacheNames="sysConfig", key="#configId")
     public SysConfig selectConfigById(Long configId)
     {
         SysConfig config = new SysConfig();
@@ -69,9 +73,12 @@ public class SysConfigServiceImpl implements ISysConfigService
      * @return 结果
      */
     @Override
-    public int insertConfig(SysConfig config)
+    @CachePut(cacheNames="sysConfig", key="#config.configId")
+    public SysConfig insertConfig(SysConfig config)
     {
-        return configMapper.insertConfig(config);
+        configMapper.insertConfig(config);
+
+        return config;
     }
 
     /**
@@ -81,9 +88,11 @@ public class SysConfigServiceImpl implements ISysConfigService
      * @return 结果
      */
     @Override
-    public int updateConfig(SysConfig config)
+    @CachePut(cacheNames="sysConfig", key="#config.configId")
+    public SysConfig updateConfig(SysConfig config)
     {
-        return configMapper.updateConfig(config);
+        configMapper.updateConfig(config);
+        return  config;
     }
 
     /**
@@ -94,6 +103,7 @@ public class SysConfigServiceImpl implements ISysConfigService
      */
     @Override
     public int deleteConfigByIds(String ids)
+
     {
         return configMapper.deleteConfigByIds(Convert.toStrArray(ids));
     }

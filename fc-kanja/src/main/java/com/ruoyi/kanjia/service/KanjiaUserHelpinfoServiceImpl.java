@@ -53,6 +53,7 @@ public class KanjiaUserHelpinfoServiceImpl implements IKanjiaUserHelpinfoService
 	@Override
 	public int insertKanjiaUserHelpinfo(KanjiaUserHelpinfo kanjiaUserHelpinfo)
 	{
+
 	    return kanjiaUserHelpinfoMapper.insertKanjiaUserHelpinfo(kanjiaUserHelpinfo);
 	}
 	
@@ -79,5 +80,10 @@ public class KanjiaUserHelpinfoServiceImpl implements IKanjiaUserHelpinfoService
 	{
 		return kanjiaUserHelpinfoMapper.deleteKanjiaUserHelpinfoByIds(Convert.toStrArray(ids));
 	}
-	
+
+	@Override
+	public Double selToUserKanjiaMoneySum(Long uid) {
+		return kanjiaUserHelpinfoMapper.selToUserKanjiaMoneySum(uid);
+	}
+
 }

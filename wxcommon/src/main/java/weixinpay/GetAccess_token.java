@@ -67,7 +67,7 @@ public class GetAccess_token {
         boolean isAccess_token = RedisUtil.exists("access_token");
 
         if (!isAccess_token) {
-            String a = HttpUtil.sendGet(ACCESSURL, "grant_type=client_credential&appid=" + Configure.getAppID() + "&secret=" + Configure.getSecret());
+            String a = HttpUtil.sendGet(ACCESSURL, "grant_type=client_credential&appid=" + Configure.getAppidmm() + "&secret=" + Configure.getSecretmm());
             JSONObject jsonObject = JSONObject.parseObject(a);
             access_token = jsonObject.getString("access_token");
             RedisUtil.setex("access_tokenGZH", access_token, 7200);

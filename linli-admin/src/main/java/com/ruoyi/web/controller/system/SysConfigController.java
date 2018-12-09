@@ -3,6 +3,7 @@ package com.ruoyi.web.controller.system;
 import java.util.List;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -84,7 +85,8 @@ public class SysConfigController extends BaseController
     public AjaxResult addSave(SysConfig config)
     {
         config.setCreateBy(ShiroUtils.getLoginName());
-        return toAjax(configService.insertConfig(config));
+        configService.insertConfig(config);
+        return success();
     }
 
     /**
@@ -107,7 +109,8 @@ public class SysConfigController extends BaseController
     public AjaxResult editSave(SysConfig config)
     {
         config.setUpdateBy(ShiroUtils.getLoginName());
-        return toAjax(configService.updateConfig(config));
+        configService.updateConfig(config);
+        return success();
     }
 
     /**
