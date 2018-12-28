@@ -12,7 +12,7 @@ ruoyi:
   # 获取ip地址开关
   addressEnabled: true
   # 部署网站地址
-  url: http://fc.haichenpeisong.com/
+  url: http://fc.slmimi.com/
 
 # 开发环境配置
 server:

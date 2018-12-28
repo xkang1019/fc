@@ -432,14 +432,14 @@
 
     wx.ready(function () {
         console.info('ready');
-        var link = 'http://fc.haichenpeisong.com/fc/index/jump';
+        var link = 'http://fc.slmimi.com/fc/index/jump';
         var protocol = window.location.protocol;
         var host = window.location.host;
         //分享朋友圈
         wx.onMenuShareTimeline({
             title: '周年庆遇上双11，快来摇一摇！10万豪礼免费送',
             link: link,
-            imgUrl: 'http://fc.haichenpeisong.com/images/16.jpg',// 自定义图标
+            imgUrl: 'http://fc.slmimi.com/images/16.jpg',// 自定义图标
             trigger: function (res) {
                 // 不要尝试在trigger中使用ajax异步请求修改本次分享的内容，因为客户端分享操作是一个同步操作，这时候使用ajax的回包会还没有返回.
                 //alert('click shared');
