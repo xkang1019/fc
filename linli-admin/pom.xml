@@ -106,13 +106,25 @@
                     <!--<warName>xkang</warName>-->
                 <!--</configuration>-->
             <!--</plugin>-->
-            <plugin>
+           <!-- <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
                     <skip>true</skip>
+
+                </configuration>
+
+            </plugin>-->
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                    <compilerArguments>
+                        <extdirs>lib</extdirs>
+                    </compilerArguments>
                 </configuration>
             </plugin>
+
         </plugins>
         <finalName>linli-3.6</finalName>
     </build>
