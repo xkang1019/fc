@@ -16,13 +16,13 @@ public class Configure {
 	private static String secret = "9be4961adeea29c50ae8562c5ac66c9b";
 
 
-	private static  String GzhAppId ="wx9753ad1c9b413b7f";
+	private static  String GzhAppId ="wxabf1e1a7db49c50a";
 
-	private static  String GzhSecret ="26ba6fa2f7239fcc7d96a7c41cf733ec";
+	private static  String GzhSecret ="c62055bd94265f4314bcf1df70ee1c16";
 
-	private static  String appidmm = "wx28cc809e924ed56b";//fc
+	private static  String appidmm = "wxabf1e1a7db49c50a";//fc
 
-	private static String secretmm= "c4ac7344f8ae120f9da65019e7f48d0d";//fc
+	private static String secretmm= "c62055bd94265f4314bcf1df70ee1c16";//fc
 
 
 	public static String getSecret() {

@@ -109,13 +109,13 @@ public class ShiroConfig
      * @return
      */
     public RedisManager redisManager() {
-        logger.info("创建shiro redisManager,连接Redis..URL= " + "127.0.0.1" + ":" + 6379);
+        logger.info("创建shiro redisManager,连接Redis..URL= " + host + ":" + port);
         RedisManager redisManager = new RedisManager();
         redisManager.setHost(host);
         redisManager.setPort(port);
         redisManager.setExpire(sessionExpireTime);// 配置缓存过期时间
         redisManager.setTimeout(timeout);
-        // redisManager.setPassword(password)
+         redisManager.setPassword("911789");
         return redisManager;
     }
 

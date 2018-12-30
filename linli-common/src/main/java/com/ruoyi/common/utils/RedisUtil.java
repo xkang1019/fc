@@ -20,7 +20,7 @@ public final class RedisUtil {
 
     private static RedisUtil ru = new RedisUtil();
 
-    private String host = "127.0.0.1";
+    private String host = "101.201.70.151";
 
     private int port = 6379;
 
@@ -35,7 +35,7 @@ public final class RedisUtil {
             // 表示当borrow(引入)一个jedis实例时，最大的等待时间，如果超过等待时间，则直接抛出JedisConnectionException；
             config.setMaxWaitMillis(1000 * 100);
             config.setTestOnBorrow(true);
-            pool = new JedisPool(config, host, port, 100000);
+            pool = new JedisPool(config, host, port, 100000,"911789");
         }
 
     }

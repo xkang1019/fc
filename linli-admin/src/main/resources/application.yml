@@ -8,11 +8,11 @@ ruoyi:
   copyrightYear: 2018
   # 文件上传路径
   #profile: D:/profile/
-  profile: /home/ubuntu/Forest/images/
+  profile: /root/images/
   # 获取ip地址开关
   addressEnabled: true
   # 部署网站地址
-  url: http://fc.slmimi.com/
+  url: http://fc.suyongw.com/
 
 # 开发环境配置
 server:
