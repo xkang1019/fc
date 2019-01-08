@@ -81,7 +81,8 @@ public class FcIndexConteroller extends BaseController {
     @GetMapping("/jump")
     public String jump()
     {
-        return prefix + "/jump";
+       // return prefix + "/jump";
+        return  "redirect:https://dwz.cn/d7QXpTmj";
     }
 
 
@@ -130,7 +131,7 @@ public class FcIndexConteroller extends BaseController {
 
     private AjaxResult getopenIdWeb(String code) throws ServletException, IOException {
         System.out.println(code+":code");
-        HttpGet httpGet = new HttpGet("https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx28cc809e924ed56b&secret=c4ac7344f8ae120f9da65019e7f48d0d&code="+code+"&grant_type=authorization_code");
+        HttpGet httpGet = new HttpGet("https://api.weixin.qq.com/sns/oauth2/access_token?appid=wxabf1e1a7db49c50a&secret=c62055bd94265f4314bcf1df70ee1c16&code="+code+"&grant_type=authorization_code");
         //设置请求器的配置
         HttpClient httpClient = HttpClients.createDefault();
         HttpResponse res = httpClient.execute(httpGet);
@@ -163,6 +164,7 @@ public class FcIndexConteroller extends BaseController {
             user.setPostIds(new Long[]{4L});
             user.setPrize(1);
             user.setSumprize(2);
+
             if (sysUserService.insertUser(user)>0) {
                 L.info("用户注册成功--------------------");
             }else {
