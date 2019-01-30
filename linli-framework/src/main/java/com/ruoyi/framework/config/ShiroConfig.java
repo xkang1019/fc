@@ -115,7 +115,7 @@ public class ShiroConfig
         redisManager.setPort(port);
         redisManager.setExpire(sessionExpireTime);// 配置缓存过期时间
         redisManager.setTimeout(timeout);
-         redisManager.setPassword("911789");
+         ///redisManager.setPassword("911789");
         return redisManager;
     }
 

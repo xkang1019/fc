@@ -30,13 +30,13 @@ public class SyncOnlineSessionFilter extends PathMatchingFilter
     @Override
     protected boolean preHandle(ServletRequest request, ServletResponse response) throws Exception
     {
-        System.out.println("preHandle");
+       // System.out.println("preHandle");
         OnlineSession session = (OnlineSession) request.getAttribute(ShiroConstants.ONLINE_SESSION);
         // 如果session stop了 也不同步
         // session停止时间，如果stopTimestamp不为null，则代表已停止
         if (session != null && session.getUserId() != null && session.getStopTimestamp() == null)
         {
-            System.out.println("preHandle进来了");
+          //  System.out.println("preHandle进来了");
             onlineSessionDAO.syncToDb(session);
         }
         return true;

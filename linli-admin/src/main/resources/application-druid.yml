@@ -47,9 +47,9 @@ spring:
                     config:
                         multi-statement-allow: true
     redis:
-          host: 101.201.70.151
+          host: 127.0.0.1
           port: 6379
-          password: 911789
+          password:
           timeout: 10000
           jedis:
               pool:

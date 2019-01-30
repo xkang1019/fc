@@ -81,7 +81,7 @@ public class OnlineWebSessionManager extends DefaultWebSessionManager
         if (request != null && null != sessionId) {
             Object sessionObj = request.getAttribute(sessionId.toString());
             if (sessionObj != null) {
-                log.debug("read session from request");
+               // log.debug("read session from request");
                 return (Session) sessionObj;
             }
         }
